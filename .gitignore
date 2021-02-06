@@ -1,3 +1,4 @@
 .snowpack
 build
+.env
 node_modules
