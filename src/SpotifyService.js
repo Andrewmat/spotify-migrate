@@ -76,6 +76,31 @@ export async function getIsAuth() {
   return !!CookieService.getCookie(COOKIE_SPOTIFY_ACCESS_TOKEN)
 }
 
+const DELAY_BETWEEN_REQUESTS = 2000
+export async function getUserSavedTracks(
+  onProgress,
+  pageSize = 50,
+  limitPages = Infinity
+) {
+  let page = 0
+  let collected = []
+  let response
+  let total
+
+  do {
+    response = await getUserSavedTracksPaginated(page, pageSize)
+    ;({total} = response)
+    collected.push(...response.items)
+    onProgress(response.items, collected, total)
+    page++
+    await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_REQUESTS))
+  } while (collected.length < total && page < limitPages)
+
+  return collected
+}
+
+window.getUserSavedTracks = getUserSavedTracks
+
 /** @returns {SavedTracksResponse} */
 export async function getUserSavedTracksPaginated(page, pageSize = 50) {
   const response = await treatRateLimit(

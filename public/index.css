@@ -1,0 +1,58 @@
+/* Add CSS styles here! */
+body {
+  font-family: sans-serif;
+}
+
+li {
+  list-style: none;
+}
+
+.track-list {
+  width: fit-content;
+  max-width: 500px;
+}
+
+.track-item {
+  display: flex;
+  height: 64px;
+  margin: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  border: #ccc solid 1px;
+  width: 100%;
+}
+
+.album-img {
+  height: 64px;
+  width: 64px;
+}
+
+.album-img img {
+  width: 100%;
+}
+
+.track-text {
+  margin-left: 10px;
+}
+
+.track-link {
+  font-size: 1.2em;
+  color: #339;
+  text-decoration: none;
+  display: inline-block;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artists {
+  color: #666;
+}
+
+.link-artist {
+  display: inline-block;
+  text-decoration: none;
+  color: #669;
+  margin-right: 5px;
+}
