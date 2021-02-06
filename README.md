@@ -1,24 +1,32 @@
-# New Project
+# Spotify-migrate
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+This project is meant to find all your saved songs on Spotify, and export as a csv file
 
-## Available Scripts
+## Getting started
 
-### npm start
+Add the client id into the `.env` file
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+```
+SNOWPACK_PUBLIC_SPOTIFY_CLIENT_ID=0a1...14b
+```
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+Run the following:
 
-### npm run build
+```
+yarn install
+yarn dev
+```
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+In the page that opens, click in **Subscribe Spotify**
 
-**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.json` config file.
+Give permissions for the app `spotify-migrate`
 
-### Q: What about Eject?
+In the following page, click in `Import songs`
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+## Tech
+
+This page is built using:
+
+* Snowpack
+* React
+* Spotify API

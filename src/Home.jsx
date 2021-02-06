@@ -2,11 +2,12 @@ import React, {useState} from 'react'
 import HasAuth from './HasAuth'
 import {openAuthDialog, getUserSavedTracksPaginated} from './SpotifyService'
 
+/**
+ * @typedef {import('./d.ts').Spotify.TrackItem} TrackItem
+ * */
+
 export default function Home() {
-  /**
-   * @typedef {import('./d.ts').Spotify.TrackItem} TrackItem
-   * @type {[TrackItem[], (tracks: TrackItem[]) => void]}
-   * */
+  /** @type {[TrackItem[], (tracks: TrackItem[]) => void]} */
   const [tracks, setTracks] = useState()
 
   function onSubscribeClick() {
@@ -14,8 +15,7 @@ export default function Home() {
   }
 
   async function onImportClick() {
-    const response = await getUserSavedTracksPaginated(0, 10)
-    console.log(response)
+    const response = await getUserSavedTracksPaginated(0)
     setTracks(response.items)
   }
 
