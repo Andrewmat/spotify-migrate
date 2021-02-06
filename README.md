@@ -4,12 +4,6 @@ This project is meant to find all your saved songs on Spotify, and export as a c
 
 ## Getting started
 
-Add the client id into the `.env` file
-
-```
-SNOWPACK_PUBLIC_SPOTIFY_CLIENT_ID=0a1...14b
-```
-
 Run the following:
 
 ```
