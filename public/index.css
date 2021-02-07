@@ -1,66 +1,21 @@
-/* Add CSS styles here! */
+:root {
+  --accent-base: #1db954;
+  --accent-light: #2bde6a;
+  --fg-base: #191414;
+  --fg-light: #362b2b;
+  --bg-base: #f0f0f0;
+  --bg-light: #ffffff;
+  --nt-base: #666666;
+  --nt-light: #999999;
+  --focus-outline: #168d40;
+  --radius-sm: 2px;
+}
+
 body {
-  font-family: sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--fg-base);
 }
 
-li {
+li[class] {
   list-style: none;
-}
-
-.margin-text {
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.track-list {
-  width: fit-content;
-  max-width: 500px;
-}
-
-.track-item {
-  display: flex;
-  height: 64px;
-  margin: 4px;
-  padding: 8px;
-  border-radius: 8px;
-  border: #ccc solid 1px;
-  width: 500px;
-  content-visibility: auto;
-  contain-intrinsic-size: 82px;
-}
-
-.album-img {
-  height: 64px;
-  width: 64px;
-}
-
-.album-img img {
-  width: 100%;
-}
-
-.track-text {
-  margin-left: 10px;
-}
-
-.track-link {
-  font-size: 1.2em;
-  color: #339;
-  text-decoration: none;
-  display: inline-block;
-  max-width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.artists {
-  color: #666;
-}
-
-.link-artist {
-  display: inline-block;
-  text-decoration: none;
-  color: #669;
-  margin-right: 5px;
 }

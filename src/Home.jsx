@@ -3,6 +3,7 @@ import {HasAuth} from './auth'
 import SpotifyImporter from './SpotifyImporter'
 import {openAuthDialog} from './SpotifyService'
 import Greeting from './Greeting'
+import Button from './styled/Button'
 
 export default function Home() {
   function onSubscribeClick() {
@@ -12,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <HasAuth not>
-        <button onClick={onSubscribeClick}>Subscribe Spotify</button>
+        <Button onClick={onSubscribeClick}>Subscribe Spotify</Button>
       </HasAuth>
       <HasAuth>
         <Greeting />

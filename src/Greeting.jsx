@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styled from 'styled-components'
 import {useAccount} from './account'
 
 /**
@@ -26,5 +27,17 @@ export default function Greeting() {
 
 /** @param {{account: Account}} */
 function GreetingAccount({account}) {
-  return <h2>Olá, {account.display_name}!</h2>
+  return (
+    <Heading>
+      Hello, <HeadingName>{account.display_name}</HeadingName>!
+    </Heading>
+  )
 }
+
+const Heading = styled.h1`
+  font-size: 1.2rem;
+`
+
+const HeadingName = styled.span`
+  color: var(--accent-base);
+`

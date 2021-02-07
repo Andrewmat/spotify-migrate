@@ -1,5 +1,9 @@
 import * as React from 'react'
+import SpotifyTrackCard from './SpotifyTrackCard'
 import {getUserSavedTracks} from './SpotifyService'
+import TextMargin from './styled/TextMargin'
+import Button from './styled/Button'
+import styled from 'styled-components'
 
 /**
  * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
@@ -29,13 +33,13 @@ export default function SpotifyImporter() {
   async function onImportClick() {
     setFinished(false)
     setTracks([])
-    await getUserSavedTracks(onImportProgress, 50)
+    await getUserSavedTracks(onImportProgress, 50, 2)
     setFinished(true)
   }
 
   return (
     <div>
-      <button onClick={onImportClick}>Import songs</button>
+      <Button onClick={onImportClick}>Import songs</Button>
       {total > 0 && (
         <>
           <progress
@@ -44,78 +48,33 @@ export default function SpotifyImporter() {
             max={total}
           />
           {!finished && (
-            <span className='margin-text'>
+            <TextMargin>
               {tracks.length} songs imported / {total} total
-            </span>
+            </TextMargin>
           )}
         </>
       )}
       {finished && (
-        <span className='margin-text'>
+        <TextMargin>
           <strong>Finished! {tracks.length} songs imported</strong>
-        </span>
+        </TextMargin>
       )}
       {tracks && tracks.length ? (
-        <ul className='track-list'>
-          {tracks.filter(Boolean).map(({track}, index) => (
-            <li key={track.id}>
-              <div className='track-item'>
-                <div>{index + 1}) </div>
-                {(() => {
-                  const image = track.album.images.reduce((minImg, currImg) => {
-                    if (!minImg) {
-                      return currImg
-                    }
-                    if (currImg.height < minImg.height) {
-                      return currImg
-                    }
-                    return minImg
-                  })
-                  return (
-                    <div className='album-img'>
-                      <img
-                        height={image.height}
-                        width={image.width}
-                        src={image.url}
-                        alt={track.album.name}
-                        loading='lazy'
-                      />
-                    </div>
-                  )
-                })()}
-                <div className='track-text'>
-                  <div>
-                    <a
-                      className='track-link'
-                      href={track.external_urls.spotify}
-                      target='_blank'
-                      rel='noreferrer'
-                    >
-                      {track.name}
-                    </a>
-                  </div>
-                  <div className='artists'>
-                    by{' '}
-                    <strong>
-                      {track.artists.map(artist => (
-                        <a
-                          key={artist.id}
-                          href={artist.external_urls.spotify}
-                          target='_blank'
-                          rel='noreferrer'
-                          className='link-artist'
-                        >
-                          {artist.name}
-                        </a>
-                      ))}
-                    </strong>
-                  </div>
-                </div>
-              </div>
-            </li>
+        <TrackList>
+          {tracks.filter(Boolean).map(({track}) => (
+            <TrackItem key={track.id}>
+              <SpotifyTrackCard {...track} />
+            </TrackItem>
           ))}
-        </ul>
+        </TrackList>
       ) : null}
     </div>
   )
 }
+
+const TrackList = styled.ul`
+  width: fit-content;
+  max-width: 500px;
+`
+
+const TrackItem = styled.li``

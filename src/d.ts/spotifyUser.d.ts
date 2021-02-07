@@ -1,4 +1,4 @@
-import {SpotifyCommon} from './spotify-common'
+import {SpotifyCommon} from './spotifyCommon'
 
 export namespace SpotifyUser {
   interface UserResponse {

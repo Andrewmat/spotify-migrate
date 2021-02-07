@@ -1,2 +1,2 @@
-export * from './spotify-track'
-export * from './spotify-user'
+export * from './spotifyTrack'
+export * from './spotifyUser'
