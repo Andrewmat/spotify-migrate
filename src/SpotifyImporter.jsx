@@ -33,7 +33,7 @@ export default function SpotifyImporter() {
   async function onImportClick() {
     setFinished(false)
     setTracks([])
-    await getUserSavedTracks(onImportProgress, 50, 2)
+    await getUserSavedTracks(onImportProgress, 50)
     setFinished(true)
   }
 
