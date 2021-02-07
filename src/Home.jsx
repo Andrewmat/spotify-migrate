@@ -1,7 +1,9 @@
-import React from 'react'
-import HasAuth from './HasAuth'
+import * as React from 'react'
+import {HasAuth} from './auth'
 import SpotifyImporter from './SpotifyImporter'
 import {openAuthDialog} from './SpotifyService'
+import Greeting from './Greeting'
+
 export default function Home() {
   function onSubscribeClick() {
     openAuthDialog('/auth-spotify')
@@ -9,11 +11,11 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Home</h1>
       <HasAuth not>
         <button onClick={onSubscribeClick}>Subscribe Spotify</button>
       </HasAuth>
       <HasAuth>
+        <Greeting />
         <SpotifyImporter />
       </HasAuth>
     </div>

@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import * as React from 'react'
 import {getIsAuth} from './SpotifyService'
 
-export default function HasAuth({not, children}) {
-  const [isAuthenticated, setIsAuthenticated] = useState()
+export function useAuth() {
+  const [isAuthenticated, setIsAuthenticated] = React.useState()
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isAuthenticated !== undefined) {
       return
     }
@@ -14,7 +14,13 @@ export default function HasAuth({not, children}) {
     })()
   })
 
-  const showChildren = useMemo(() => {
+  return isAuthenticated
+}
+
+export function HasAuth({not, children}) {
+  const isAuthenticated = useAuth()
+
+  const showChildren = React.useMemo(() => {
     const expectedAuthenticated = !not
     return expectedAuthenticated === isAuthenticated
   }, [not, isAuthenticated])

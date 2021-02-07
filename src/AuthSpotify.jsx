@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import * as React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import {resolveAuthCallback} from './SpotifyService'
 
 export default function AuthSpotify() {
-  const [resolution, setResolution] = useState('loading')
+  const [resolution, setResolution] = React.useState('loading')
   const history = useHistory()
   const location = useLocation()
-  useEffect(() => {
+  React.useEffect(() => {
     let authToken
     try {
       authToken = resolveAuthCallback(location)
@@ -30,7 +30,6 @@ export default function AuthSpotify() {
 
   return (
     <div>
-      <div>ola2</div>
       {resolution === 'success' ? (
         <span>Deu certo! Redirecionando para a home</span>
       ) : (

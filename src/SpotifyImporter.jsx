@@ -1,24 +1,30 @@
-import React, {useCallback, useState} from 'react'
+import * as React from 'react'
 import {getUserSavedTracks} from './SpotifyService'
 
 /**
- * @typedef {import('./d.ts').Spotify.TrackItem} TrackItem
+ * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
+ * @typedef {import('react').Dispatch<import('react').SetStateAction<TrackItem[]>>} ReactDispatchTrackItems
  * */
 
 export default function SpotifyImporter() {
-  /** @type {[TrackItem[], (tracks: TrackItem[]) => void]} */
-  const [tracks, setTracks] = useState([])
-  const [finished, setFinished] = useState(false)
-  const [total, setTotal] = useState(0)
+  /** @type {[TrackItem[], ReactDispatchTrackItems]} */
+  const [tracks, setTracks] = React.useState([])
+  const [finished, setFinished] = React.useState(false)
+  const [total, setTotal] = React.useState(0)
 
-  const onImportProgress = useCallback((newTracks, _, responseTotal) => {
-    setTracks(currentTracks =>
-      currentTracks
-        .concat(newTracks)
-        .sort((t1, t2) => t2.track.popularity - t1.track.popularity)
-    )
-    setTotal(responseTotal)
-  }, [])
+  const onImportProgress = React.useCallback(
+    (newTrackItems, responseTotal) => {
+      setTracks(currentTrackItems =>
+        currentTrackItems
+          .concat(newTrackItems)
+          .sort((t1, t2) => t2.track.popularity - t1.track.popularity)
+      )
+      if (responseTotal !== total) {
+        setTotal(responseTotal)
+      }
+    },
+    [total]
+  )
 
   async function onImportClick() {
     setFinished(false)
@@ -28,7 +34,7 @@ export default function SpotifyImporter() {
   }
 
   return (
-    <div style={{fontFamily: 'sans-serif'}}>
+    <div>
       <button onClick={onImportClick}>Import songs</button>
       {total > 0 && (
         <>
@@ -38,22 +44,23 @@ export default function SpotifyImporter() {
             max={total}
           />
           {!finished && (
-            <span style={{display: 'inline-block', marginLeft: 5}}>
+            <span className='margin-text'>
               {tracks.length} songs imported / {total} total
             </span>
           )}
         </>
       )}
       {finished && (
-        <span style={{display: 'inline-block', marginLeft: 5}}>
+        <span className='margin-text'>
           <strong>Finished! {tracks.length} songs imported</strong>
         </span>
       )}
       {tracks && tracks.length ? (
         <ul className='track-list'>
-          {tracks.filter(Boolean).map(({track}) => (
+          {tracks.filter(Boolean).map(({track}, index) => (
             <li key={track.id}>
               <div className='track-item'>
+                <div>{index + 1}) </div>
                 {(() => {
                   const image = track.album.images.reduce((minImg, currImg) => {
                     if (!minImg) {
@@ -71,6 +78,7 @@ export default function SpotifyImporter() {
                         width={image.width}
                         src={image.url}
                         alt={track.album.name}
+                        loading='lazy'
                       />
                     </div>
                   )
