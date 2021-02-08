@@ -1,7 +1,7 @@
 import localForage from 'localforage'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
+ * @typedef {import('./d.ts').SpotifyTrack.TrackItem} SavedTracksResponse
  * */
 
 const trackStore = localForage.createInstance({
@@ -12,11 +12,13 @@ const trackStore = localForage.createInstance({
   description: 'A collection of all tracks imported from Spotify',
 })
 
-export async function get(id) {
-  return await trackStore.getItem(id)
+const ID = 'item'
+
+export async function get() {
+  return await trackStore.getItem(ID)
 }
 
-/** @param {SavedTracksResponse} response */
-export async function save(id, response) {
-  return await trackStore.setItem(id, response)
+/** @param {TrackItem[]} trackItems */
+export async function save(trackItems) {
+  return await trackStore.setItem(ID, trackItems)
 }

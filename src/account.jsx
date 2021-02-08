@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {getUserProfile as serviceGetUserProfile} from './SpotifyService'
+import {fetchUserProfile as servicefetchUserProfile} from './SpotifyService'
 import {useAuth} from './auth'
 
 /**
@@ -46,7 +46,7 @@ export function Provider({children}) {
 async function fetchAccount(dispatch) {
   dispatch({type: 'loading'})
   try {
-    const account = await serviceGetUserProfile()
+    const account = await servicefetchUserProfile()
     dispatch({type: 'fulfilled', payload: {account}})
   } catch (e) {
     dispatch({type: 'rejected', payload: {message: e.message}})

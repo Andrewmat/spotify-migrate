@@ -31,15 +31,20 @@ const Button = styled.button`
   display: inline-block;
   background-color: ${props => theme[props.theme].bgColor};
   color: ${props => theme[props.theme].color};
-  font-size: 1.2rem;
+  font-size: ${props => (props.size ? props.size : '1em')};
   font-weight: bold;
   padding: 10px 30px;
   border-radius: 500px;
   border: none;
+  cursor: pointer;
 
-  :hover {
+  &:hover {
     background-color: ${props => theme[props.theme].hover.bgColor};
     color: ${props => theme[props.theme].hover.color};
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
   }
 
   :focus {

@@ -1,12 +1,18 @@
 :root {
   --accent-base: #1db954;
   --accent-light: #2bde6a;
+  
   --fg-base: #191414;
   --fg-light: #362b2b;
+
   --bg-base: #f0f0f0;
   --bg-light: #ffffff;
+  
   --nt-base: #666666;
   --nt-light: #999999;
+
+  --border: #cccccc;
+  
   --focus-outline: #168d40;
   --radius-sm: 2px;
 }
@@ -16,6 +22,7 @@ body {
   color: var(--fg-base);
 }
 
-li[class] {
-  list-style: none;
+* {
+  margin: 0;
+  padding: 0;
 }

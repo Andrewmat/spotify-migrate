@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styled from 'styled-components'
 import {HasAuth} from './auth'
 import SpotifyImporter from './SpotifyImporter'
 import {openAuthDialog} from './SpotifyService'
@@ -11,7 +12,7 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <Container>
       <HasAuth not>
         <Button onClick={onSubscribeClick}>Subscribe Spotify</Button>
       </HasAuth>
@@ -19,6 +20,10 @@ export default function Home() {
         <Greeting />
         <SpotifyImporter />
       </HasAuth>
-    </div>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  padding: 20px;
+`

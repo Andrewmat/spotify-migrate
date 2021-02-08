@@ -1,4 +1,5 @@
 import * as CookieService from './CookieService'
+import {get as getFromStorage, save as saveToStorage} from './StorageService'
 
 const COOKIE_SPOTIFY_ACCESS_TOKEN = 'spotify_access_token'
 
@@ -6,10 +7,38 @@ const COOKIE_SPOTIFY_ACCESS_TOKEN = 'spotify_access_token'
  * @typedef {import('./d.ts').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
  * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
  * @typedef {import('./d.ts').SpotifyUser.UserResponse} UserResponse
+ *
+ * fetchX: fetch X from the endpoint
+ * loadX: load X from the cache
+ * getX: get X from the cache if it exists, fetch from the endpoint otherwise
  */
 
 /** @returns {TrackItem[]} */
-export async function getUserSavedTracks(
+export async function getAllUserSavedTracks({
+  onProgress,
+  pageSize = 50,
+  limitPages = Infinity,
+  ignoreCached = false,
+}) {
+  let items
+  if (!ignoreCached) {
+    items = await getFromStorage()
+    if (items) {
+      return items
+    }
+  }
+  items = fetchAllUserSavedTracks(onProgress, pageSize, limitPages)
+  // items.sort((t1, t2) => t2.track.popularity - t1.track.popularity)
+  await saveToStorage(items)
+  return items
+}
+
+export async function loadAllUserSavedTracks() {
+  return await getFromStorage()
+}
+
+/** @returns {TrackItem[]} */
+async function fetchAllUserSavedTracks(
   onProgress,
   pageSize = 50,
   limitPages = Infinity
@@ -21,14 +50,14 @@ export async function getUserSavedTracks(
 
   do {
     if (total === undefined) {
-      const response = await getUserSavedTracksPage(page, pageSize)
+      const response = await fetchUserSavedTracksPage(page, pageSize)
       ;({total} = response)
       collected.push(...response.items)
       onProgress(response.items, collected, total)
       page++
     } else {
       requestPool.push(
-        getUserSavedTracksPage(page, pageSize).then(response => {
+        fetchUserSavedTracksPage(page, pageSize).then(response => {
           const {total} = response
           collected.push(...response.items)
           onProgress(response.items, total)
@@ -44,7 +73,7 @@ export async function getUserSavedTracks(
 }
 
 /** @returns {UserResponse} */
-export async function getUserProfile() {
+export async function fetchUserProfile() {
   try {
     const response = await get('/v1/me')
 
@@ -60,13 +89,13 @@ export async function getUserProfile() {
 }
 
 /** @returns {SavedTracksResponse} */
-async function getUserSavedTracksPage(page, pageSize = 50) {
+async function fetchUserSavedTracksPage(page, pageSize = 50) {
   const response = await treatRateLimit(
     get('/v1/me/tracks', {
       offset: page * pageSize,
       limit: pageSize,
     }),
-    () => getUserSavedTracksPage(page, pageSize)
+    () => fetchUserSavedTracksPage(page, pageSize)
   )
   if (!response.ok) {
     throw response

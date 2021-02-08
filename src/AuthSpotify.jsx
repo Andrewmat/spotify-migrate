@@ -22,20 +22,18 @@ export default function AuthSpotify() {
       redirectHome()
     }
     function redirectHome() {
-      setTimeout(() => {
-        history.push('/')
-      }, 3000)
+      history.push('/')
     }
   }, [history, location])
 
   return (
     <div>
       {resolution === 'success' ? (
-        <span>Deu certo! Redirecionando para a home</span>
+        <span>You're logged in. Redirecting to home</span>
       ) : (
         <span>
-          Houve um erro ao tentar se conectar no Spotify. Redirecionando para a
-          home.
+          There has been an error trying to subscribe to Spotify. Redirecting to
+          home
         </span>
       )}
     </div>

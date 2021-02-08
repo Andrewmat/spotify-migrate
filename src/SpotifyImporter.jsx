@@ -1,9 +1,11 @@
 import * as React from 'react'
 import SpotifyTrackCard from './SpotifyTrackCard'
-import {getUserSavedTracks} from './SpotifyService'
+import {getAllUserSavedTracks} from './SpotifyService'
 import TextMargin from './styled/TextMargin'
 import Button from './styled/Button'
 import styled from 'styled-components'
+import {loadAllUserSavedTracks} from './SpotifyAccountService'
+import {device} from './css'
 
 /**
  * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
@@ -13,16 +15,16 @@ import styled from 'styled-components'
 export default function SpotifyImporter() {
   /** @type {[TrackItem[], ReactDispatchTrackItems]} */
   const [tracks, setTracks] = React.useState([])
+
+  /** @type {[TrackItem[], ReactDispatchTrackItems]} */
+  const [cachedTracks, setCachedTracks] = React.useState()
+
   const [finished, setFinished] = React.useState(false)
   const [total, setTotal] = React.useState(0)
 
   const onImportProgress = React.useCallback(
     (newTrackItems, responseTotal) => {
-      setTracks(currentTrackItems =>
-        currentTrackItems
-          .concat(newTrackItems)
-          .sort((t1, t2) => t2.track.popularity - t1.track.popularity)
-      )
+      setTracks(currentTrackItems => currentTrackItems.concat(newTrackItems))
       if (responseTotal !== total) {
         setTotal(responseTotal)
       }
@@ -30,16 +32,62 @@ export default function SpotifyImporter() {
     [total]
   )
 
+  React.useEffect(() => {
+    ;(async () => {
+      const tracks = await loadAllUserSavedTracks()
+      if (tracks) {
+        setCachedTracks(tracks)
+      }
+    })()
+  }, [])
+
   async function onImportClick() {
     setFinished(false)
     setTracks([])
-    await getUserSavedTracks(onImportProgress, 50)
+    const tracks = await getAllUserSavedTracks({
+      onProgress: onImportProgress,
+      // pageSize: 5,
+      // limitPages: 2,
+      ignoreCached: true,
+    })
+    setTracks(tracks)
     setFinished(true)
   }
 
+  const showImportFromCache =
+    cachedTracks &&
+    cachedTracks.length &&
+    (tracks == null || tracks.length === 0)
+
   return (
     <div>
-      <Button onClick={onImportClick}>Import songs</Button>
+      <div>
+        {showImportFromCache && (
+          <>
+            <TextMargin>
+              Found {cachedTracks.length} songs in the cache.
+            </TextMargin>
+            <Button
+              onClick={() => {
+                setTracks(cachedTracks)
+              }}
+            >
+              Import cached songs
+            </Button>
+            <Button
+              theme='secondary'
+              onClick={() => setCachedTracks(undefined)}
+            >
+              Dismiss
+            </Button>
+          </>
+        )}
+      </div>
+      <div>
+        {(tracks == null || tracks.length <= 0) && (
+          <Button onClick={onImportClick}>Import songs from Spotify</Button>
+        )}
+      </div>
       {total > 0 && (
         <>
           <progress
@@ -73,8 +121,17 @@ export default function SpotifyImporter() {
 }
 
 const TrackList = styled.ul`
-  width: fit-content;
-  max-width: 500px;
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-columns: 1fr;
+  list-style: none;
+  grid-gap: 8px;
+  margin: auto;
+  max-width: 1326px;
+
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
 `
 
 const TrackItem = styled.li``
