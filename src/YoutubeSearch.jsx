@@ -1,6 +1,12 @@
 import * as React from 'react'
+import {useParams, useLocation} from 'react-router-dom'
 import useScript from './useScript'
-import {checkSubscribed, searchMusicVideo, subscribe} from './YoutubeService'
+import {
+  checkSubscribed,
+  rateVideo,
+  searchMusicVideo,
+  subscribe,
+} from './YoutubeService'
 
 /**
  * @typedef {import('./d.ts').GoogleApi.GApi} GApi
@@ -8,7 +14,13 @@ import {checkSubscribed, searchMusicVideo, subscribe} from './YoutubeService'
  * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
  */
 
-export default function YoutubeSearch() {
+export default function YoutubeSearch(props) {
+  const params = Object.fromEntries(new URLSearchParams(useLocation().search))
+  const q = {
+    name: params.name,
+    artist: params.artist,
+  }
+
   const {
     isLoaded,
     isFailed,
@@ -16,7 +28,6 @@ export default function YoutubeSearch() {
   } = useScript('https://apis.google.com/js/api.js', {globalName: 'gapi'})
 
   const [isSignedIn, setSignedIn] = React.useState(false)
-  const [term, setTerm] = React.useState('')
 
   /** @type {[YoutubeResource[], ReactDispatchYoutubeResources]} */
   const [searchResult, setSearchResult] = React.useState([])
@@ -25,26 +36,35 @@ export default function YoutubeSearch() {
   const gapi = globalValue
 
   React.useEffect(() => {
+    if (!isLoaded) {
+      return
+    }
     ;(async () => {
-      if (!isLoaded) {
-        return
-      }
       if (await checkSubscribed(gapi)) {
         setSignedIn(true)
       }
     })()
   }, [isLoaded, gapi])
 
+  React.useEffect(() => {
+    if (!isLoaded || !isSignedIn) {
+      return
+    }
+    ;(async () => {
+      const term = [q.name, q.artist].map(v => `"${v}"`).join(' ')
+      const results = await searchMusicVideo(gapi, term)
+      setSearchResult(results)
+    })()
+  }, [gapi, isLoaded, isSignedIn, q.name, q.artist])
+
   async function subscribeYoutube() {
     await subscribe(gapi)
     setSignedIn(true)
   }
 
-  /** @param {Event} e */
-  async function onSubmitSearch(e) {
-    e.preventDefault()
-    const results = await searchMusicVideo(gapi, term)
-    setSearchResult(results)
+  async function saveVideo(id) {
+    await rateVideo(gapi, id, 'like')
+    console.log('deu certo!')
   }
 
   if (isFailed) {
@@ -53,22 +73,12 @@ export default function YoutubeSearch() {
 
   return (
     <span>
-      Deu sucesso!
       {!isSignedIn ? (
         <button onClick={subscribeYoutube} disabled={!isLoaded}>
           Youtube
         </button>
       ) : (
         <>
-          <form onSubmit={onSubmitSearch}>
-            <input
-              type='text'
-              name='term'
-              value={term}
-              onChange={e => setTerm(e.target.value)}
-            />
-          </form>
-
           {searchResult.length > 0 && (
             <ul>
               {searchResult.map(result => (
@@ -80,6 +90,9 @@ export default function YoutubeSearch() {
                   >
                     {result.snippet.title}
                   </a>
+                  <button onClick={() => saveVideo(result.id.videoId)}>
+                    Save
+                  </button>
                 </li>
               ))}
             </ul>

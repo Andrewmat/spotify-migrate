@@ -6,6 +6,7 @@ import Button from './styled/Button'
 import styled from 'styled-components'
 import {loadAllUserSavedTracks} from './SpotifyAccountService'
 import {device} from './css'
+import {Link} from 'react-router-dom'
 
 /**
  * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
@@ -111,7 +112,11 @@ export default function SpotifyImporter() {
         <TrackList>
           {tracks.filter(Boolean).map(({track}) => (
             <TrackItem key={track.id}>
-              <SpotifyTrackCard {...track} />
+              <Link
+                to={`/youtube?name=${track.name}&artist=${track.artists[0].name}`}
+              >
+                <SpotifyTrackCard {...track} />
+              </Link>
             </TrackItem>
           ))}
         </TrackList>

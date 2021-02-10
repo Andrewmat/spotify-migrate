@@ -40,7 +40,7 @@ export async function subscribe(gapi, ...scopes) {
   await currentUser.grant({scope})
 }
 
-/** @param {GApi} gapi */
+/** @param {GApi} gapi @param {string} term */
 export async function searchMusicVideo(gapi, term) {
   await loadLibs(gapi, 'auth2', 'client')
   gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
@@ -53,6 +53,17 @@ export async function searchMusicVideo(gapi, term) {
     type: 'video',
   })
   return response.result.items
+}
+
+/** @param {GApi} gapi @param {string} videoId @param {'none' | 'like' | 'dislike'} rating */
+export async function rateVideo(gapi, videoId, rating) {
+  await loadLibs(gapi, 'auth2', 'client')
+  gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
+  await loadYoutubeApi(gapi)
+  await gapi.client.youtube.videos.rate({
+    id: videoId,
+    rating,
+  })
 }
 
 /** @param {GApi} gapi @returns {Promise<GApiAuthInstance>} */
