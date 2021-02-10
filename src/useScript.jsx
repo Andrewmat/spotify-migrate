@@ -18,16 +18,19 @@ export default function useScript(src, options) {
     status: 'idle',
   })
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoOptions = React.useMemo(() => options, [options.globalName])
+
   React.useEffect(() => {
     ;(async () => {
       try {
-        const globalObj = await loadScript(src, options)
+        const globalObj = await loadScript(src, memoOptions)
         dispatch({type: 'load', globalObj})
       } catch (error) {
         dispatch({type: 'error', error})
       }
     })()
-  }, [src])
+  }, [src, memoOptions])
 
   return React.useMemo(
     () => ({

@@ -1,16 +1,41 @@
 export namespace GApiAuth2 {
   interface GApiAuth {
-    init: (options: GApiInitOptions) => Promise<void>;
-    getAuthInstance: () => GApiAuthInstance
+    init(options: GApiInitOptions): Promise<void>;
+    getAuthInstance(): GApiAuthInstance;
   }
 
   interface GApiAuthInstance {
-    signIn: (options: GApiAuthInstanceSignInOptions) => Promise<void>;
+    signIn(options: GApiAuthInstanceSignInOptions): Promise<void>;
     isSignedIn: GApiAuthInstanceIsSignedIn;
+    currentUser: GApiCurrentUser;
+  }
+
+  interface GApiCurrentUser {
+    get(): GoogleUser;
+    listen(listener: function): void;
+  }
+
+  interface GoogleUser {
+    getId(): string;
+    isSignedIn(): boolean;
+    getBasicProfile(): GoogleUserBasicProfile;
+    getGrantedScopes(): string;
+    hasGrantedScopes(scope: GApiAuthInstanceScope): boolean;
+    grant(options: GApiAuthInstanceSignInOptions): Promise<void>;
+  }
+
+  interface GoogleUserBasicProfile {
+    getId(): string;
+    getName(): string;
+    getGivenName(): string;
+    getFamilyName(): string;
+    getImageUrl(): string;
+    getEmail(): string;
   }
 
   interface GApiAuthInstanceIsSignedIn {
-    listen: (callback: (isSignedIn: boolean) => void) => void;
+    get(): boolean;
+    listen(callback: (isSignedIn: boolean) => void): void;
   }
   
   interface GApiInitOptions {
@@ -18,10 +43,16 @@ export namespace GApiAuth2 {
   }
 
   interface GApiAuthInstanceSignInOptions {
-    scope: GApiAuthInstanceSignInYoutubeScope
+    scope: GApiAuthInstanceScope
   }
 
-  type GApiAuthInstanceSignInYoutubeScope = 
+  type GApiAuthInstanceScope =
+    GApiAuthInstanceScopeYoutube |
+    GApiAuthInstanceScopeUser;
+
+  type GApiAuthInstanceScopeUser = 'profile' | 'email'
+  
+  type GApiAuthInstanceScopeYoutube = 
     'https://www.googleapis.com/auth/youtube' |
     'https://www.googleapis.com/auth/youtube.channel-memberships.creator' |
     'https://www.googleapis.com/auth/youtube.force-ssl' |

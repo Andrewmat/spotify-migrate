@@ -1,6 +1,6 @@
 import * as React from 'react'
-import {getVar} from './EnvService'
 import useScript from './useScript'
+import {checkSubscribed, searchMusicVideo, subscribe} from './YoutubeService'
 
 /**
  * @typedef {import('./d.ts').GoogleApi.GApi} GApi
@@ -8,14 +8,16 @@ import useScript from './useScript'
  * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
  */
 
-export default function useAuthYoutube() {
+export default function YoutubeSearch() {
   const {
     isLoaded,
     isFailed,
     globalValue,
   } = useScript('https://apis.google.com/js/api.js', {globalName: 'gapi'})
+
   const [isSignedIn, setSignedIn] = React.useState(false)
   const [term, setTerm] = React.useState('')
+
   /** @type {[YoutubeResource[], ReactDispatchYoutubeResources]} */
   const [searchResult, setSearchResult] = React.useState([])
 
@@ -23,43 +25,26 @@ export default function useAuthYoutube() {
   const gapi = globalValue
 
   React.useEffect(() => {
-    if (!isLoaded) {
-      return
-    }
-
     ;(async () => {
-      await new Promise(resolve => gapi.load('client:auth2', resolve))
-      console.log('load successful')
-      await gapi.auth2.init({client_id: getVar('YOUTUBE_CLIENT_ID')})
-      console.log('auth init successful')
+      if (!isLoaded) {
+        return
+      }
+      if (await checkSubscribed(gapi)) {
+        setSignedIn(true)
+      }
     })()
   }, [isLoaded, gapi])
 
   async function subscribeYoutube() {
-    await gapi.auth2
-      .getAuthInstance()
-      .signIn({scope: 'https://www.googleapis.com/auth/youtube.force-ssl'})
-    console.log('auth signin successful')
-
-    gapi.client.setApiKey(getVar('YOUTUBE_API_KEY'))
-    await gapi.client.load(
-      'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
-    )
-    console.log('client load successful')
+    await subscribe(gapi)
     setSignedIn(true)
   }
 
   /** @param {Event} e */
   async function onSubmitSearch(e) {
     e.preventDefault()
-    const response = await gapi.client.youtube.search.list({
-      part: ['snippet'],
-      q: term,
-      videoCategoryId: 10,
-      type: 'video',
-    })
-
-    setSearchResult(response.result.items)
+    const results = await searchMusicVideo(gapi, term)
+    setSearchResult(results)
   }
 
   if (isFailed) {
@@ -70,7 +55,9 @@ export default function useAuthYoutube() {
     <span>
       Deu sucesso!
       {!isSignedIn ? (
-        <button onClick={subscribeYoutube}>Youtube</button>
+        <button onClick={subscribeYoutube} disabled={!isLoaded}>
+          Youtube
+        </button>
       ) : (
         <>
           <form onSubmit={onSubmitSearch}>
@@ -85,7 +72,7 @@ export default function useAuthYoutube() {
           {searchResult.length > 0 && (
             <ul>
               {searchResult.map(result => (
-                <li>
+                <li key={result.id.videoId}>
                   <a
                     href={`https://www.youtube.com/watch?v=${result.id.videoId}`}
                     target='_blank'
