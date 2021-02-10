@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-import {Provider as AccountProvider} from './account'
-import Home from './Home'
-import AuthSpotify from './AuthSpotify'
-import YoutubeSearch from './YoutubeSearch'
+import {Provider as AccountProvider} from '@/spotify/spotifyAccount'
+import Home from '@/pages/Home'
+import AuthSpotify from '@/pages/AuthSpotify'
+import YoutubeSearch from '@/pages/YoutubeSearch'
 
 export default function App() {
   return (

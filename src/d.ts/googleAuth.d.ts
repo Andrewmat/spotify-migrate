@@ -1,4 +1,4 @@
-export namespace GApiAuth2 {
+export namespace GoogleApiAuth {
   interface GApiAuth {
     init(options: GApiInitOptions): Promise<void>;
     getAuthInstance(): GApiAuthInstance;
@@ -12,7 +12,7 @@ export namespace GApiAuth2 {
 
   interface GApiCurrentUser {
     get(): GoogleUser;
-    listen(listener: function): void;
+    listen(listener: () => void): void;
   }
 
   interface GoogleUser {

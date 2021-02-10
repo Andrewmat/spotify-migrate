@@ -1,12 +1,12 @@
-import * as CookieService from './CookieService'
-import {get as getFromStorage, save as saveToStorage} from './StorageService'
+import * as CookieService from '@/CookieService'
+import {get as getFromStorage, save as saveToStorage} from '@/StorageService'
 
 const COOKIE_SPOTIFY_ACCESS_TOKEN = 'spotify_access_token'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
- * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
- * @typedef {import('./d.ts').SpotifyUser.UserResponse} UserResponse
+ * @typedef {import('@Type').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
+ * @typedef {import('@Type').SpotifyTrack.TrackItem} TrackItem
+ * @typedef {import('@Type').SpotifyUser.UserResponse} UserResponse
  *
  * fetchX: fetch X from the endpoint
  * loadX: load X from the cache

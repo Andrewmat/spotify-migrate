@@ -1,12 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {useAccount} from './account'
+import {useAccount} from '@/spotify/spotifyAccount'
 
 /**
  * @typedef {import('./account').Account} Account
  * */
 
-export default function Greeting() {
+export default function SpotifyGreeting() {
   const a = useAccount()
   const {status, account, errorMessage} = a
 

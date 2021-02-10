@@ -1,10 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {HasAuth} from './auth'
-import SpotifyImporter from './SpotifyImporter'
-import {openAuthDialog} from './SpotifyService'
-import Greeting from './Greeting'
-import Button from './styled/Button'
+import {HasAuth} from '@/spotify/components/spotifyAuth'
+import SpotifyImporter from '@/spotify/components/SpotifyImporter'
+import {openAuthDialog} from '@/spotify/services/SpotifyService'
+import SpotifyGreeting from '@/spotify/components/SpotifyGreeting'
+import Button from '@/styled/SpotifyButton'
 
 export default function Home() {
   function onSubscribeClick() {
@@ -17,7 +17,7 @@ export default function Home() {
         <Button onClick={onSubscribeClick}>Subscribe Spotify</Button>
       </HasAuth>
       <HasAuth>
-        <Greeting />
+        <SpotifyGreeting />
         <SpotifyImporter />
       </HasAuth>
     </Container>

@@ -1,16 +1,20 @@
 import * as React from 'react'
-import {useParams, useLocation} from 'react-router-dom'
-import useScript from './useScript'
+import {useLocation} from 'react-router-dom'
+import styled from 'styled-components'
+import useScript from '@/useScript'
 import {
   checkSubscribed,
   rateVideo,
   searchMusicVideo,
   subscribe,
-} from './YoutubeService'
+} from '@/YoutubeService'
+import YoutubeVideoCard from '@/youtube/YoutubeVideoCard'
+import {device} from '@/css'
+import Button from '@/styled/YoutubeButton'
 
 /**
- * @typedef {import('./d.ts').GoogleApi.GApi} GApi
- * @typedef {import('./d.ts').GApiYoutubeResponse.GApiYoutubeResource} YoutubeResource
+ * @typedef {typeof window.gapi} GApi
+ * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeResource
  * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
  */
 
@@ -52,7 +56,7 @@ export default function YoutubeSearch(props) {
     }
     ;(async () => {
       const term = [q.name, q.artist].map(v => `"${v}"`).join(' ')
-      const results = await searchMusicVideo(gapi, term)
+      const results = await searchMusicVideo(gapi, term, 10)
       setSearchResult(results)
     })()
   }, [gapi, isLoaded, isSignedIn, q.name, q.artist])
@@ -64,7 +68,9 @@ export default function YoutubeSearch(props) {
 
   async function saveVideo(id) {
     await rateVideo(gapi, id, 'like')
-    console.log('deu certo!')
+  }
+  async function unsaveVideo(id) {
+    await rateVideo(gapi, id, 'none')
   }
 
   if (isFailed) {
@@ -72,33 +78,52 @@ export default function YoutubeSearch(props) {
   }
 
   return (
-    <span>
+    <Container>
       {!isSignedIn ? (
-        <button onClick={subscribeYoutube} disabled={!isLoaded}>
-          Youtube
-        </button>
+        <Button onClick={subscribeYoutube} disabled={!isLoaded}>
+          {isLoaded ? 'Sign to Youtube' : '...'}
+        </Button>
       ) : (
         <>
           {searchResult.length > 0 && (
-            <ul>
+            <ResultList>
               {searchResult.map(result => (
-                <li key={result.id.videoId}>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${result.id.videoId}`}
-                    target='_blank'
-                    rel='noreferrer'
-                  >
-                    {result.snippet.title}
-                  </a>
-                  <button onClick={() => saveVideo(result.id.videoId)}>
-                    Save
-                  </button>
-                </li>
+                <ResultItem key={result.id.videoId}>
+                  <YoutubeVideoCard
+                    {...result}
+                    onSave={saveVideo}
+                    onUnsave={unsaveVideo}
+                  />
+                </ResultItem>
               ))}
-            </ul>
+            </ResultList>
           )}
         </>
       )}
-    </span>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  padding: 20px;
+`
+const ResultList = styled.ul`
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: 120px;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  list-style: none;
+
+  @media ${device.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media ${device.desktop} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`
+
+const ResultItem = styled.li`
+  height: 100%;
+`

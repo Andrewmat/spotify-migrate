@@ -1,12 +1,12 @@
 import {v4 as uuid} from 'uuid'
-import {getVar} from './EnvService'
-import * as CookieService from './CookieService'
+import {getVar} from '@/EnvService'
+import * as CookieService from '@/CookieService'
 
 const COOKIE_SPOTIFY_AUTH_STATE = 'tmp_spotify_auth_state'
 const COOKIE_SPOTIFY_ACCESS_TOKEN = 'spotify_access_token'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
+ * @typedef {import('@Type').SpotifyTrack.SavedTracksResponse} SavedTracksResponse
  */
 
 export async function getIsAuth() {

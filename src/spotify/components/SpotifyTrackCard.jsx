@@ -1,17 +1,25 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from './styled/Button'
-import Join from './Join'
-import {device, textEllipsis} from './css'
+import Button from '@/styled/SpotifyButton'
+import Join from '@/Join'
+import {device, textEllipsis} from '@/css'
+import {Link} from 'react-router-dom'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.Track} Track
+ * @typedef {import('@Type').SpotifyTrack.Track} Track
  * @typedef {import('react').MutableRefObject<HTMLAudioElement>} AudioRef
  */
 
-/** @param {Track} props */
+/** @param {Track & {showYoutubeLink: boolean}} props */
 export default function SpotifyTrackCard(props) {
-  const {album, artists, name, external_urls, preview_url} = props
+  const {
+    album,
+    artists,
+    name,
+    external_urls,
+    preview_url,
+    showYoutubeLink,
+  } = props
 
   const [isPlaying, setIsPlaying] = React.useState(false)
 
@@ -68,7 +76,7 @@ export default function SpotifyTrackCard(props) {
           ))}
         </Join>
       </CardArtists>
-      <PreviewContainer>
+      <InteractionContainer>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio src={preview_url} ref={audioRef} loop />
         <Button
@@ -87,7 +95,20 @@ export default function SpotifyTrackCard(props) {
         >
           {isPlaying ? 'Pause' : 'Play'}
         </Button>
-      </PreviewContainer>
+        {showYoutubeLink && (
+          <LinkYoutubeContainer>
+            <LinkYoutube to={`/youtube?name=${name}&artist=${artists[0].name}`}>
+              <YoutubeIconImg
+                src='/images/youtube-icon.png'
+                alt='YouTube'
+                width='734'
+                height='518'
+              />
+              Search
+            </LinkYoutube>
+          </LinkYoutubeContainer>
+        )}
+      </InteractionContainer>
     </TrackCard>
   )
 }
@@ -98,15 +119,15 @@ const TrackCard = styled.div`
     'title preview'
     'artist preview';
   grid-template-rows: auto auto;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto auto;
   grid-gap: 10px;
-  height: 64px;
+  height: 84px;
   font-size: 10px;
   padding: 8px;
   border-radius: var(--radius-sm);
   border: var(--border) solid 1px;
   content-visibility: auto;
-  contain-intrinsic-size: 100px;
+  contain-intrinsic-size: 120px;
 
   @media ${device.mobileL} {
     grid-template-areas:
@@ -175,8 +196,31 @@ const LinkArtist = styled.a`
   }
 `
 
-const PreviewContainer = styled.div`
+const InteractionContainer = styled.div`
   grid-area: preview;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+`
+
+const LinkYoutubeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  color: #282828;
+`
+
+const LinkYoutube = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const YoutubeIconImg = styled.img`
+  margin: 5px;
+  width: 20px;
+  height: auto;
 `
 
 const Separator = styled.span`

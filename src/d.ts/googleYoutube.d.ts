@@ -1,4 +1,4 @@
-export namespace GApiYoutube {
+export namespace GoogleApiYoutube {
   interface GApiYoutubeClient {
     videos: GApiYoutubeVideos;
     search: GApiYoutubeSearch;

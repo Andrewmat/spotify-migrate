@@ -1,8 +1,8 @@
-import {getVar} from './EnvService'
+import {getVar} from '@/EnvService'
 
 /**
- * @typedef {import('./d.ts').GoogleApi.GApi} GApi
- * @typedef {import('./d.ts').GApiAuth2.GApiAuthInstance} GApiAuthInstance
+ * @typedef {import('@Type').GoogleApi.GApi} GApi
+ * @typedef {import('@Type').GApiAuth2.GApiAuthInstance} GApiAuthInstance
  * */
 
 /** @param {GApi} gapi, @returns {Promise<boolean>} */
@@ -41,7 +41,7 @@ export async function subscribe(gapi, ...scopes) {
 }
 
 /** @param {GApi} gapi @param {string} term */
-export async function searchMusicVideo(gapi, term) {
+export async function searchMusicVideo(gapi, term, maxResults) {
   await loadLibs(gapi, 'auth2', 'client')
   gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
   await loadYoutubeApi(gapi)
@@ -51,6 +51,7 @@ export async function searchMusicVideo(gapi, term) {
     q: term,
     videoCategoryId: 10,
     type: 'video',
+    maxResults,
   })
   return response.result.items
 }

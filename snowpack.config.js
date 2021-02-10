@@ -1,8 +1,13 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
+  root: '.',
+
   mount: {
+    public: {
+      url: '/',
+      static: true,
+    },
     src: '/dist',
-    public: '/',
     /* ... */
   },
   plugins: [
@@ -18,9 +23,15 @@ module.exports = {
       dest: '/',
     },
   ],
+  alias: {
+    '@': './src',
+  },
   optimize: {
     /* Example: Bundle your final build: */
     bundle: true,
+    // minify: true,
+    // target: 'es2017',
+    // splitting: true,
   },
   packageOptions: {
     /* ... */

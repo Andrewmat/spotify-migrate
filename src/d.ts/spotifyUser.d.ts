@@ -23,7 +23,7 @@ export namespace SpotifyUser {
   }
 
   interface UserFollowers {
-    href: string?;
+    href?: string;
     total: number;
   }
 }

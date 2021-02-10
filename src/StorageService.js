@@ -1,7 +1,7 @@
 import localForage from 'localforage'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.TrackItem} SavedTracksResponse
+ * @typedef {import('@Type').SpotifyTrack.TrackItem} SavedTracksResponse
  * */
 
 const trackStore = localForage.createInstance({

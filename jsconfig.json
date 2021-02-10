@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "jsx": "react",
+    "paths": {
+      "@/*": ["./*"],
+      "@Type": ["./d.ts/index.d.ts"],
+      "@Type/*": ["./d.ts/*"]
+    }
+  },
+  "exclude": ["node_modules", "build"]
+}

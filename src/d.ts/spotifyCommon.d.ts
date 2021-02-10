@@ -1,6 +1,13 @@
 export namespace SpotifyCommon {
-  type ExternalUrls = Record<'spotify', string>
-  type ExternalIds = Record<'isrc', string>
+  interface ExternalUrls {
+    spotify?: string;
+  }
+
+  interface ExternalIds {
+    isrc?: string;
+    ean?: string;
+    upc?: string;
+  }
 
   interface Image {
     url: string;

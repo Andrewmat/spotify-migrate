@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {resolveAuthCallback} from './SpotifyService'
+import {resolveAuthCallback} from '@/spotify/services/SpotifyService'
 
 export default function AuthSpotify() {
   const [resolution, setResolution] = React.useState('loading')

@@ -1,15 +1,14 @@
 import * as React from 'react'
-import SpotifyTrackCard from './SpotifyTrackCard'
-import {getAllUserSavedTracks} from './SpotifyService'
-import TextMargin from './styled/TextMargin'
-import Button from './styled/Button'
+import SpotifyTrackCard from '@/spotify/components/SpotifyTrackCard'
+import {getAllUserSavedTracks} from '@/spotify/services/SpotifyService'
+import TextMargin from '@/styled/TextMargin'
+import Button from '@/styled/SpotifyButton'
 import styled from 'styled-components'
-import {loadAllUserSavedTracks} from './SpotifyAccountService'
-import {device} from './css'
-import {Link} from 'react-router-dom'
+import {loadAllUserSavedTracks} from '@/spotify/services/SpotifyAccountService'
+import {device} from '@/css'
 
 /**
- * @typedef {import('./d.ts').SpotifyTrack.TrackItem} TrackItem
+ * @typedef {import('@Type').SpotifyTrack.TrackItem} TrackItem
  * @typedef {import('react').Dispatch<import('react').SetStateAction<TrackItem[]>>} ReactDispatchTrackItems
  * */
 
@@ -47,8 +46,8 @@ export default function SpotifyImporter() {
     setTracks([])
     const tracks = await getAllUserSavedTracks({
       onProgress: onImportProgress,
-      // pageSize: 5,
-      // limitPages: 2,
+      pageSize: 5,
+      limitPages: 3,
       ignoreCached: true,
     })
     setTracks(tracks)
@@ -112,11 +111,7 @@ export default function SpotifyImporter() {
         <TrackList>
           {tracks.filter(Boolean).map(({track}) => (
             <TrackItem key={track.id}>
-              <Link
-                to={`/youtube?name=${track.name}&artist=${track.artists[0].name}`}
-              >
-                <SpotifyTrackCard {...track} />
-              </Link>
+              <SpotifyTrackCard {...track} showYoutubeLink />
             </TrackItem>
           ))}
         </TrackList>

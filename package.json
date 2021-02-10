@@ -2,11 +2,12 @@
   "scripts": {
     "dev": "snowpack dev",
     "build": "snowpack build",
-    "build:serve": "yarn build && serve build"
+    "build:serve": "yarn build && serve build -p 8080"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-react-refresh": "^2.4.0",
+    "@snowpack/plugin-webpack": "^2.3.0",
     "@types/gapi": "^0.0.39",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.0.0",

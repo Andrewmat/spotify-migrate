@@ -1,5 +1,5 @@
 import * as React from 'react'
-import createCachedPromise from './createCachedPromise'
+import createCachedPromise from '@/createCachedPromise'
 
 const cachedPromise = createCachedPromise()
 

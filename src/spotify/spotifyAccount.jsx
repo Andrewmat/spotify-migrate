@@ -1,10 +1,10 @@
 import * as React from 'react'
-import {fetchUserProfile as servicefetchUserProfile} from './SpotifyService'
-import {useAuth} from './auth'
+import {fetchUserProfile as servicefetchUserProfile} from '@/spotify/services/SpotifyService'
+import {useAuth} from '@/spotify/components/spotifyAuth'
 
 /**
  * @typedef {'loading' | 'fulfilled' | 'rejected'| 'idle'} Status
- * @typedef {import('./d.ts').SpotifyUser.UserResponse} Account
+ * @typedef {import('@Type').SpotifyUser.UserResponse} Account
  * @typedef {{status:Status, account: Account, errorMessage: string}} AccountContext
  * @typedef {import('react').Context<AccountContext>} ReactContext
  * @typedef {import('react').Dispatch<import('react').SetStateAction<AccountContext>>} ReactAccountDispatch

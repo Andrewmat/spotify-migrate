@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {getIsAuth} from './SpotifyService'
+import {getIsAuth} from '@/spotify/services/SpotifyService'
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = React.useState()
