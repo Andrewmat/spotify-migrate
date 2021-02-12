@@ -4,7 +4,7 @@ import localForage from 'localforage'
  * @typedef {import('@Type').SpotifyTrack.TrackItem} SavedTracksResponse
  * */
 
-const trackStore = localForage.createInstance({
+const spotifySavedTracksStore = localForage.createInstance({
   driver: [localForage.INDEXEDDB],
   name: 'spotifysavedtracks',
   storeName: 'spotifysavedtracks',
@@ -12,13 +12,32 @@ const trackStore = localForage.createInstance({
   description: 'A collection of all tracks imported from Spotify',
 })
 
-const ID = 'item'
+const ID_SPOTIFY_SAVED_TRACKS = 'item'
 
-export async function get() {
-  return await trackStore.getItem(ID)
+export async function getSpotifySavedTracks() {
+  return await spotifySavedTracksStore.getItem(ID_SPOTIFY_SAVED_TRACKS)
 }
 
 /** @param {TrackItem[]} trackItems */
-export async function save(trackItems) {
-  return await trackStore.setItem(ID, trackItems)
+export async function setSpotifySavedTracks(trackItems) {
+  return await spotifySavedTracksStore.setItem(
+    ID_SPOTIFY_SAVED_TRACKS,
+    trackItems
+  )
+}
+
+const youtubeSearchStore = localForage.createInstance({
+  driver: [localForage.INDEXEDDB],
+  name: 'youtubesearchresults',
+  storeName: 'youtubesearchresults',
+  version: 1,
+  description: 'Cache for youtube results for searches',
+})
+
+export async function getYoutubeSearchResults(term) {
+  return await youtubeSearchStore.getItem(term)
+}
+
+export async function setYoutubeSearchResults(term, results) {
+  return await youtubeSearchStore.setItem(term, results)
 }

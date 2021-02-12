@@ -23,7 +23,7 @@ export default function YoutubeVideoCard(props) {
 
   const [isSaved, setSaved, isChangingSaved] = useStateWithTransition(
     false,
-    3000
+    2000
   )
   const image =
     snippet.thumbnails.default ??
@@ -50,20 +50,6 @@ export default function YoutubeVideoCard(props) {
     }
 
     return 'Save'
-
-    // if (isSaved) {
-    //   if (isChangingSaved) {
-    //     return 'Save'
-    //   } else {
-    //     return 'Unsave'
-    //   }
-    // } else {
-    //   if (isChangingSaved) {
-    //     return 'Saved!'
-    //   } else {
-    //     return 'Save'
-    //   }
-    // }
   }, [isChangingSaved, isSaved])
 
   return (

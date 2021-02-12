@@ -1,5 +1,8 @@
 import * as CookieService from '@/CookieService'
-import {get as getFromStorage, save as saveToStorage} from '@/StorageService'
+import {
+  getSpotifySavedTracks as getFromStorage,
+  setSpotifySavedTracks as saveToStorage,
+} from '@/StorageService'
 
 const COOKIE_SPOTIFY_ACCESS_TOKEN = 'spotify_access_token'
 

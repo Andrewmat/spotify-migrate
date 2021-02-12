@@ -1,4 +1,8 @@
 import {getVar} from '@/EnvService'
+import {
+  getYoutubeSearchResults,
+  setYoutubeSearchResults,
+} from './StorageService'
 
 /**
  * @typedef {import('@Type').GoogleApi.GApi} GApi
@@ -41,9 +45,20 @@ export async function subscribe(gapi, ...scopes) {
 }
 
 /** @param {GApi} gapi @param {string} term */
-export async function searchMusicVideo(gapi, term, maxResults) {
+export async function searchMusicVideo(
+  gapi,
+  term,
+  {maxResults = 10, useCache = true} = {}
+) {
+  if (useCache) {
+    const cachedResults = await getYoutubeSearchResults(term)
+
+    if (cachedResults) {
+      return cachedResults
+    }
+  }
+
   await loadLibs(gapi, 'auth2', 'client')
-  gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
   await loadYoutubeApi(gapi)
 
   const response = await gapi.client.youtube.search.list({
@@ -53,13 +68,17 @@ export async function searchMusicVideo(gapi, term, maxResults) {
     type: 'video',
     maxResults,
   })
+
+  if (useCache) {
+    setYoutubeSearchResults(term, response.result.items)
+  }
+
   return response.result.items
 }
 
 /** @param {GApi} gapi @param {string} videoId @param {'none' | 'like' | 'dislike'} rating */
 export async function rateVideo(gapi, videoId, rating) {
   await loadLibs(gapi, 'auth2', 'client')
-  gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
   await loadYoutubeApi(gapi)
   await gapi.client.youtube.videos.rate({
     id: videoId,
@@ -102,6 +121,9 @@ async function loadLibs(gapi, ...libs) {
     return
   }
 
-  console.log(`loading libs '${notInitLibs.join(':')}'`)
   await new Promise(resolve => gapi.load(notInitLibs.join(':'), resolve))
+
+  if (notInitLibs.includes('client')) {
+    gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
+  }
 }

@@ -116,10 +116,10 @@ export default function SpotifyTrackCard(props) {
 const TrackCard = styled.div`
   display: grid;
   grid-template-areas:
-    'title preview'
-    'artist preview';
+    'title . preview'
+    'artist . preview';
   grid-template-rows: auto auto;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr 100px;
   grid-gap: 10px;
   height: 84px;
   font-size: 10px;
