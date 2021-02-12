@@ -56,7 +56,7 @@ export default function YoutubeSearch(props) {
     }
     ;(async () => {
       const term = [q.name, q.artist].map(v => `"${v}"`).join(' ')
-      const results = await searchMusicVideo(gapi, term, 10)
+      const results = await searchMusicVideo(gapi, term, {maxResults: 10})
       setSearchResult(results)
     })()
   }, [gapi, isLoaded, isSignedIn, q.name, q.artist])
