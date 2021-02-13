@@ -7,6 +7,8 @@ import {
 /**
  * @typedef {import('@Type').GoogleApi.GApi} GApi
  * @typedef {import('@Type').GApiAuth2.GApiAuthInstance} GApiAuthInstance
+ * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} GApiYoutubeResource
+ * @typedef {import('@Type').SpotifyTrack.Track} SpotifyTrack
  * */
 
 /** @param {GApi} gapi, @returns {Promise<boolean>} */
@@ -44,7 +46,27 @@ export async function subscribe(gapi, ...scopes) {
   await currentUser.grant({scope})
 }
 
-/** @param {GApi} gapi @param {string} term */
+/**
+ * @param {GApi} gapi
+ * @param {SpotifyTrack} track
+ * @param {{maxResults: number, useCache: boolean}}
+ * @returns {GApiYoutubeResource[]}
+ */
+export async function searchSpotifyTrack(
+  gapi,
+  track,
+  {maxResults = 10, useCache = true} = {}
+) {
+  const term = [track.name, track.artists[0].name].map(v => `"${v}"`).join(' ')
+  return await searchMusicVideo(gapi, term, {maxResults, useCache})
+}
+
+/**
+ * @param {GApi} gapi
+ * @param {string} term
+ * @param {{maxResults: number, useCache: boolean}}
+ * @returns {GApiYoutubeResource[]}
+ * */
 export async function searchMusicVideo(
   gapi,
   term,
