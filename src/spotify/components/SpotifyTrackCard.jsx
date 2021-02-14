@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from '@/styled/SpotifyButton'
+import RoundButton from '@/uikit/RoundButton'
 import Join from '@/Join'
 import {device, textEllipsis} from '@/css'
 import {Link} from 'react-router-dom'
@@ -79,8 +79,8 @@ export default function SpotifyTrackCard(props) {
       <InteractionContainer>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio src={preview_url} ref={audioRef} loop />
-        <Button
-          theme={preview_url != null ? 'primary' : 'neutral'}
+        <RoundButton
+          variant={preview_url != null ? 'accent' : 'neutral'}
           disabled={preview_url == null}
           title={preview_url == null && 'Song without preview'}
           onClick={() => {
@@ -94,7 +94,7 @@ export default function SpotifyTrackCard(props) {
           }}
         >
           {isPlaying ? 'Pause' : 'Play'}
-        </Button>
+        </RoundButton>
         {showYoutubeLink && (
           <LinkYoutubeContainer>
             <LinkYoutube to={`/youtube?name=${name}&artist=${artists[0].name}`}>

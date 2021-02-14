@@ -1,8 +1,9 @@
+import {YoutubeThemeProvider} from '@/uikit/theme'
 import * as React from 'react'
 import styled from 'styled-components'
 
 /**
- * @typedef {import('../d.ts/index').GApiYoutubeResponse.GApiYoutubeResource} YoutubeVideo
+ * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeVideo
  * */
 
 /**
@@ -15,20 +16,22 @@ import styled from 'styled-components'
 export default function SongYoutubeCard(props) {
   const {results, onAddToSave, onShowVideo} = props
   return (
-    <YoutubeContainer>
-      <YoutubeResultList>
-        {results.map(result => (
-          <YoutubeResultListItem>
-            <SongYoutubeCardResult
-              key={result.id.videoId}
-              {...result}
-              onAddToSave={() => onAddToSave(result.id.videoId)}
-              onShowVideo={() => onShowVideo(result.id.videoId)}
-            />
-          </YoutubeResultListItem>
-        ))}
-      </YoutubeResultList>
-    </YoutubeContainer>
+    <YoutubeThemeProvider>
+      <YoutubeContainer>
+        <YoutubeResultList>
+          {results.map(result => (
+            <YoutubeResultListItem>
+              <SongYoutubeCardResult
+                key={result.id.videoId}
+                {...result}
+                onAddToSave={() => onAddToSave(result.id.videoId)}
+                onShowVideo={() => onShowVideo(result.id.videoId)}
+              />
+            </YoutubeResultListItem>
+          ))}
+        </YoutubeResultList>
+      </YoutubeContainer>
+    </YoutubeThemeProvider>
   )
 }
 

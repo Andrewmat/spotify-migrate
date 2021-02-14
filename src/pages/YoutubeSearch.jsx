@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import useScript from '@/useScript'
 import {
@@ -9,8 +8,10 @@ import {
   subscribe,
 } from '@/YoutubeService'
 import YoutubeVideoCard from '@/youtube/YoutubeVideoCard'
+import RoundSquaredButton from '@/uikit/RoundSquaredButton'
+import useQuery from '@/useQuery'
 import {device} from '@/css'
-import Button from '@/styled/YoutubeButton'
+import {YoutubeThemeProvider} from '@/uikit/theme'
 
 /**
  * @typedef {typeof window.gapi} GApi
@@ -18,18 +19,20 @@ import Button from '@/styled/YoutubeButton'
  * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
  */
 
-export default function YoutubeSearch(props) {
-  const params = Object.fromEntries(new URLSearchParams(useLocation().search))
+export default function YoutubeSearch() {
+  const {name, artist} = useQuery()
   const q = {
-    name: params.name,
-    artist: params.artist,
+    name: name,
+    artist: artist,
   }
 
   const {
     isLoaded,
     isFailed,
     globalValue,
-  } = useScript('https://apis.google.com/js/api.js', {globalName: 'gapi'})
+  } = useScript('https://apis.google.com/js/api.js', {
+    globalName: 'gapi',
+  })
 
   const [isSignedIn, setSignedIn] = React.useState(false)
 
@@ -55,8 +58,12 @@ export default function YoutubeSearch(props) {
       return
     }
     ;(async () => {
-      const term = [q.name, q.artist].map(v => `"${v}"`).join(' ')
-      const results = await searchMusicVideo(gapi, term, {maxResults: 10})
+      const term = [q.name, q.artist]
+        .map(v => `"${v}"`)
+        .join(' ')
+      const results = await searchMusicVideo(gapi, term, {
+        maxResults: 10,
+      })
       setSearchResult(results)
     })()
   }, [gapi, isLoaded, isSignedIn, q.name, q.artist])
@@ -78,29 +85,34 @@ export default function YoutubeSearch(props) {
   }
 
   return (
-    <Container>
-      {!isSignedIn ? (
-        <Button onClick={subscribeYoutube} disabled={!isLoaded}>
-          {isLoaded ? 'Sign to Youtube' : '...'}
-        </Button>
-      ) : (
-        <>
-          {searchResult.length > 0 && (
-            <ResultList>
-              {searchResult.map(result => (
-                <ResultItem key={result.id.videoId}>
-                  <YoutubeVideoCard
-                    {...result}
-                    onSave={saveVideo}
-                    onUnsave={unsaveVideo}
-                  />
-                </ResultItem>
-              ))}
-            </ResultList>
-          )}
-        </>
-      )}
-    </Container>
+    <YoutubeThemeProvider>
+      <Container>
+        {!isSignedIn ? (
+          <RoundSquaredButton
+            onClick={subscribeYoutube}
+            disabled={!isLoaded}
+          >
+            {isLoaded ? 'Sign to Youtube' : '...'}
+          </RoundSquaredButton>
+        ) : (
+          <>
+            {searchResult.length > 0 && (
+              <ResultList>
+                {searchResult.map(result => (
+                  <ResultItem key={result.id.videoId}>
+                    <YoutubeVideoCard
+                      {...result}
+                      onSave={saveVideo}
+                      onUnsave={unsaveVideo}
+                    />
+                  </ResultItem>
+                ))}
+              </ResultList>
+            )}
+          </>
+        )}
+      </Container>
+    </YoutubeThemeProvider>
   )
 }
 

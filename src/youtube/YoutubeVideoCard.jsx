@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {device, textEllipsis} from '@/css'
-import Button from '@/styled/YoutubeButton'
+import RoundSquaredButton from '@/uikit/RoundSquaredButton'
 import useStateWithTransition from './useStateWithTransition'
 
 /**
@@ -71,7 +71,9 @@ export default function YoutubeVideoCard(props) {
         {snippet.channelTitle}
       </YoutubeChannel>
       <YoutubeAction>
-        <Button onClick={handleToggleSaveVideo}>{buttonLabel}</Button>
+        <RoundSquaredButton onClick={handleToggleSaveVideo}>
+          {buttonLabel}
+        </RoundSquaredButton>
       </YoutubeAction>
     </YoutubeCard>
   )

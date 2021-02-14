@@ -16,7 +16,7 @@ export default function SpotifyGreeting() {
     }
     case 'rejected': {
       console.error(errorMessage)
-      return <span>Houve um erro ao tentar carregar seu nome</span>
+      return <span>There has been a mistake when retrieving your name</span>
     }
     case 'loading':
     default: {
@@ -39,5 +39,5 @@ const Heading = styled.h1`
 `
 
 const HeadingName = styled.span`
-  color: var(--accent-base);
+  color: ${props => props.theme['accent']['bgColor']};
 `

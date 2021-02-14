@@ -4,7 +4,8 @@ import {HasAuth} from '@/spotify/components/spotifyAuth'
 import SpotifyImporter from '@/spotify/components/SpotifyImporter'
 import {openAuthDialog} from '@/spotify/services/SpotifyService'
 import SpotifyGreeting from '@/spotify/components/SpotifyGreeting'
-import Button from '@/styled/SpotifyButton'
+import RoundButton from '@/uikit/RoundButton'
+import {SpotifyThemeProvider} from '@/uikit/theme'
 
 export default function Home() {
   function onSubscribeClick() {
@@ -12,15 +13,19 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <HasAuth not>
-        <Button onClick={onSubscribeClick}>Subscribe Spotify</Button>
-      </HasAuth>
-      <HasAuth>
-        <SpotifyGreeting />
-        <SpotifyImporter />
-      </HasAuth>
-    </Container>
+    <SpotifyThemeProvider>
+      <Container>
+        <HasAuth not>
+          <RoundButton variant='accent' onClick={onSubscribeClick}>
+            Subscribe Spotify
+          </RoundButton>
+        </HasAuth>
+        <HasAuth>
+          <SpotifyGreeting />
+          <SpotifyImporter />
+        </HasAuth>
+      </Container>
+    </SpotifyThemeProvider>
   )
 }
 

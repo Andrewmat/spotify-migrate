@@ -1,4 +1,10 @@
 import Join from '@/Join'
+import RoundButton from '@/uikit/RoundButton'
+import RoundSquaredButton from '@/uikit/RoundSquaredButton'
+import {
+  SpotifyThemeProvider,
+  youtubeTheme,
+} from '@/uikit/theme'
 import * as React from 'react'
 import styled from 'styled-components'
 
@@ -37,64 +43,88 @@ export default function SongSpotifyCard(props) {
     onYoutubeSearch()
   }
 
-  const image = album.images.reduce((minImage, currImage) => {
-    if (!minImage) {
-      return currImage
+  const image = album.images.reduce(
+    (minImage, currImage) => {
+      if (!minImage) {
+        return currImage
+      }
+      if (currImage.height < minImage.height) {
+        return currImage
+      }
+      return minImage
     }
-    if (currImage.height < minImage.height) {
-      return currImage
-    }
-    return minImage
-  })
+  )
 
   return (
-    <Container>
-      <ImgContainer>
-        <Img
-          src={image.url}
-          height={image.height}
-          width={image.width}
-          alt={`${album.name} - Album`}
-        />
-      </ImgContainer>
+    <SpotifyThemeProvider>
+      <Container>
+        <ImgContainer>
+          <Img
+            src={image.url}
+            height={image.height}
+            width={image.width}
+            alt={`${album.name} - Album`}
+          />
+        </ImgContainer>
 
-      <TextContainer>
-        <TitleContainer>
-          {external_urls.spotify ? (
-            <TitleLink href={external_urls.spotify}>{name}</TitleLink>
-          ) : (
-            <Title>{name}</Title>
+        <TextContainer>
+          <TitleContainer>
+            {external_urls.spotify ? (
+              <TitleLink href={external_urls.spotify}>
+                {name}
+              </TitleLink>
+            ) : (
+              <Title>{name}</Title>
+            )}
+          </TitleContainer>
+          <ArtistList>
+            <Join
+              separator={
+                <ArtistSeparator>•</ArtistSeparator>
+              }
+            >
+              {artists.map(artist => (
+                <ArtistListItem>
+                  <ArtistLink
+                    href={artist.external_urls.spotify}
+                  >
+                    {artist.name}
+                  </ArtistLink>
+                </ArtistListItem>
+              ))}
+            </Join>
+          </ArtistList>
+          <Album>
+            <AlbumLink
+              href={props.album.external_urls.spotify}
+            >
+              {props.album.name}
+            </AlbumLink>
+          </Album>
+        </TextContainer>
+
+        <InteractiveContainer>
+          {preview_url && (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <audio src={preview_url} loop ref={audioRef} />
           )}
-        </TitleContainer>
-        <ArtistList>
-          <Join separator={<ArtistSeparator>•</ArtistSeparator>}>
-            {artists.map(artist => (
-              <ArtistListItem>
-                <ArtistLink href={artist.external_urls.spotify}>
-                  {artist.name}
-                </ArtistLink>
-              </ArtistListItem>
-            ))}
-          </Join>
-        </ArtistList>
-        <Album>
-          <AlbumLink href={props.album.external_urls.spotify}>
-            {props.album.name}
-          </AlbumLink>
-        </Album>
-      </TextContainer>
-
-      <InteractiveContainer>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        {preview_url && <audio src={preview_url} loop ref={audioRef} />}
-        <PreviewButton onClick={() => togglePreview()} disabled={!preview_url}>
-          {isPlaying ? 'Pause' : 'Play'}
-        </PreviewButton>
-        <SearchYoutubeButton onClick={() => searchYoutube()}>
-          Search
-        </SearchYoutubeButton>
-      </InteractiveContainer>
-    </Container>
+          <PreviewButton
+            variant='accent'
+            onClick={() => togglePreview()}
+            disabled={!preview_url}
+          >
+            {isPlaying ? 'Pause' : 'Play'}
+          </PreviewButton>
+          <SearchYoutubeButton
+            theme={youtubeTheme}
+            variant='accent'
+            onClick={() => searchYoutube()}
+          >
+            Search
+          </SearchYoutubeButton>
+        </InteractiveContainer>
+      </Container>
+    </SpotifyThemeProvider>
   )
 }
 
@@ -130,5 +160,5 @@ const ArtistSeparator = styled.span`
 const InteractiveContainer = styled.div`
   grid-area: interactive;
 `
-const PreviewButton = styled.button``
-const SearchYoutubeButton = styled.button``
+const PreviewButton = styled(RoundButton)``
+const SearchYoutubeButton = styled(RoundSquaredButton)``

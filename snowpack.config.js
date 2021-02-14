@@ -25,6 +25,7 @@ module.exports = {
   ],
   alias: {
     '@': './src',
+    '@Type': './src/d.ts',
   },
   optimize: {
     /* Example: Bundle your final build: */

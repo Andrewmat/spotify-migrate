@@ -1,8 +1,8 @@
 import * as React from 'react'
 import SpotifyTrackCard from '@/spotify/components/SpotifyTrackCard'
 import {getAllUserSavedTracks} from '@/spotify/services/SpotifyService'
-import TextMargin from '@/styled/TextMargin'
-import Button from '@/styled/SpotifyButton'
+import TextMargin from '@/uikit/TextMargin'
+import RoundButton from '@/uikit/RoundButton'
 import styled from 'styled-components'
 import {loadAllUserSavedTracks} from '@/spotify/services/SpotifyAccountService'
 import {device} from '@/css'
@@ -24,7 +24,9 @@ export default function SpotifyImporter() {
 
   const onImportProgress = React.useCallback(
     (newTrackItems, responseTotal) => {
-      setTracks(currentTrackItems => currentTrackItems.concat(newTrackItems))
+      setTracks(currentTrackItems =>
+        currentTrackItems.concat(newTrackItems)
+      )
       if (responseTotal !== total) {
         setTotal(responseTotal)
       }
@@ -65,34 +67,43 @@ export default function SpotifyImporter() {
         {showImportFromCache && (
           <>
             <TextMargin>
-              Found {cachedTracks.length} songs in the cache.
+              Found {cachedTracks.length} songs in the
+              cache.
             </TextMargin>
-            <Button
+            <RoundButton
+              variant='accent'
               onClick={() => {
                 setTracks(cachedTracks)
               }}
             >
               Import cached songs
-            </Button>
-            <Button
-              theme='secondary'
+            </RoundButton>
+            <RoundButton
+              variant='base'
               onClick={() => setCachedTracks(undefined)}
             >
               Dismiss
-            </Button>
+            </RoundButton>
           </>
         )}
       </div>
       <div>
         {(tracks == null || tracks.length <= 0) && (
-          <Button onClick={onImportClick}>Import songs from Spotify</Button>
+          <RoundButton
+            variant='accent'
+            onClick={onImportClick}
+          >
+            Import songs from Spotify
+          </RoundButton>
         )}
       </div>
       {total > 0 && (
         <>
           <progress
             style={{marginLeft: 5}}
-            value={tracks && tracks.length ? tracks.length : 0}
+            value={
+              tracks && tracks.length ? tracks.length : 0
+            }
             max={total}
           />
           {!finished && (
@@ -104,14 +115,19 @@ export default function SpotifyImporter() {
       )}
       {finished && (
         <TextMargin>
-          <strong>Finished! {tracks.length} songs imported</strong>
+          <strong>
+            Finished! {tracks.length} songs imported
+          </strong>
         </TextMargin>
       )}
       {tracks && tracks.length ? (
         <TrackList>
           {tracks.filter(Boolean).map(({track}) => (
             <TrackItem key={track.id}>
-              <SpotifyTrackCard {...track} showYoutubeLink />
+              <SpotifyTrackCard
+                {...track}
+                showYoutubeLink
+              />
             </TrackItem>
           ))}
         </TrackList>
