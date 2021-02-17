@@ -16,11 +16,12 @@ import SongCard from './SongCard'
 export default function SongCardList() {
   /** @type {[SpotifyTrack[], ReactDispatchSpotifyTracks]} */
   const [spotifyTracks, setSpotifyTracks] = React.useState()
-  const {
-    isLoaded,
-    isFailed,
-    globalValue,
-  } = useScript('https://apis.google.com/js/api.js', {globalName: 'gapi'})
+  const {isLoaded, isFailed, globalValue} = useScript(
+    'https://apis.google.com/js/api.js',
+    {
+      globalName: 'gapi',
+    }
+  )
 
   /** @type {GApi} */
   const gapi = globalValue
@@ -32,7 +33,9 @@ export default function SongCardList() {
 
     ;(async () => {
       const spotifyTracks = await getSpotifySavedTracks()
-      const tracks = spotifyTracks.map(trackItem => trackItem.track)
+      const tracks = spotifyTracks.map(
+        trackItem => trackItem.track
+      )
 
       setSpotifyTracks(tracks)
     })()
@@ -47,7 +50,11 @@ export default function SongCardList() {
       {spotifyTracks &&
         spotifyTracks.map(track => (
           <SongCardListItem>
-            <SongCard key={track.id} spotifyTrack={track} gapi={gapi} />
+            <SongCard
+              key={track.id}
+              spotifyTrack={track}
+              gapi={gapi}
+            />
           </SongCardListItem>
         ))}
     </SongCardListContainer>

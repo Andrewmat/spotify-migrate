@@ -24,8 +24,12 @@ export default function SongYoutubeCard(props) {
               <SongYoutubeCardResult
                 key={result.id.videoId}
                 {...result}
-                onAddToSave={() => onAddToSave(result.id.videoId)}
-                onShowVideo={() => onShowVideo(result.id.videoId)}
+                onAddToSave={() =>
+                  onAddToSave(result.id.videoId)
+                }
+                onShowVideo={() =>
+                  onShowVideo(result.id.videoId)
+                }
               />
             </YoutubeResultListItem>
           ))}
@@ -63,7 +67,9 @@ function SongYoutubeCardResult(props) {
 
       <YoutubeTextContainer>
         <YoutubeTitle>{snippet.title}</YoutubeTitle>
-        <YoutubeChannel>{snippet.channelTitle}</YoutubeChannel>
+        <YoutubeChannel>
+          {snippet.channelTitle}
+        </YoutubeChannel>
         <YoutubeDescription>
           {snippet.description.split('\n').map(line => (
             <p>{line}</p>
@@ -80,7 +86,9 @@ function SongYoutubeCardResult(props) {
         >
           Show video
         </YoutubeShowEmbedButton>
-        <YoutubeAddToSavedButton onClick={() => onAddToSave()}>
+        <YoutubeAddToSavedButton
+          onClick={() => onAddToSave()}
+        >
           Save on playlist
         </YoutubeAddToSavedButton>
       </YoutubeInteractiveContainer>

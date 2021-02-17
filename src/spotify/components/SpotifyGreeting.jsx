@@ -16,7 +16,11 @@ export default function SpotifyGreeting() {
     }
     case 'rejected': {
       console.error(errorMessage)
-      return <span>There has been a mistake when retrieving your name</span>
+      return (
+        <span>
+          There has been a mistake when retrieving your name
+        </span>
+      )
     }
     case 'loading':
     default: {
@@ -29,7 +33,8 @@ export default function SpotifyGreeting() {
 function GreetingAccount({account}) {
   return (
     <Heading>
-      Hello, <HeadingName>{account.display_name}</HeadingName>!
+      Hello,{' '}
+      <HeadingName>{account.display_name}</HeadingName>!
     </Heading>
   )
 }

@@ -16,7 +16,10 @@ export default function Home() {
     <SpotifyThemeProvider>
       <Container>
         <HasAuth not>
-          <RoundButton variant='accent' onClick={onSubscribeClick}>
+          <RoundButton
+            variant='accent'
+            onClick={onSubscribeClick}
+          >
             Subscribe Spotify
           </RoundButton>
         </HasAuth>

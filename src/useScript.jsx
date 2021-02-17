@@ -14,12 +14,17 @@ const cachedPromise = createCachedPromise()
  * @returns {{isLoaded: boolean, isFailed: boolean, globalValue: GlobalType}}
  */
 export default function useScript(src, options) {
-  const [{status, globalValue}, dispatch] = React.useReducer(reducer, {
+  const [
+    {status, globalValue},
+    dispatch,
+  ] = React.useReducer(reducer, {
     status: 'idle',
   })
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const memoOptions = React.useMemo(() => options, [options.globalName])
+  const memoOptions = React.useMemo(() => options, [
+    options.globalName,
+  ])
 
   React.useEffect(() => {
     ;(async () => {
@@ -83,7 +88,9 @@ async function loadScript(src, options = {}) {
 
         const globalObj = window[globalName]
         if (!globalObj) {
-          reject(_Error(`Global name '${globalName}' not found`))
+          reject(
+            _Error(`Global name '${globalName}' not found`)
+          )
           return
         }
         // delete window[globalName]

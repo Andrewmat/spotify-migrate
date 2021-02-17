@@ -16,14 +16,18 @@ const ctx = React.createContext()
 export function useAccount() {
   const value = React.useContext(ctx)
   if (value == null) {
-    throw Error(`useAccount should only be used inside a <Provider/> component`)
+    throw Error(
+      `useAccount should only be used inside a <Provider/> component`
+    )
   }
 
   return value
 }
 export function Provider({children}) {
   /** @type {[AccountContext, ReactAccountDispatch]} */
-  const [value, dispatch] = React.useReducer(reducer, {status: 'idle'})
+  const [value, dispatch] = React.useReducer(reducer, {
+    status: 'idle',
+  })
   const fetchAccountRef = React.useRef(fetchAccount)
 
   const authenticated = useAuth()
@@ -40,7 +44,9 @@ export function Provider({children}) {
     fetchAccountRef.current = () => {}
   }, [authenticated, value.status])
 
-  return <ctx.Provider value={value}>{children}</ctx.Provider>
+  return (
+    <ctx.Provider value={value}>{children}</ctx.Provider>
+  )
 }
 
 async function fetchAccount(dispatch) {
@@ -49,7 +55,10 @@ async function fetchAccount(dispatch) {
     const account = await servicefetchUserProfile()
     dispatch({type: 'fulfilled', payload: {account}})
   } catch (e) {
-    dispatch({type: 'rejected', payload: {message: e.message}})
+    dispatch({
+      type: 'rejected',
+      payload: {message: e.message},
+    })
   }
 }
 
@@ -59,7 +68,11 @@ function reducer(state, action) {
       return {...state, status: 'loading'}
     }
     case 'fulfilled': {
-      return {...state, status: 'fulfilled', account: action.payload.account}
+      return {
+        ...state,
+        status: 'fulfilled',
+        account: action.payload.account,
+      }
     }
     case 'rejected': {
       return {

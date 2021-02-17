@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import {Theme} from '@Type'
 
 interface RoundButtonProps {
-  theme: Theme.Theme;
-  fontSize: string;
-  variant: Theme.VariantChoices;
+  theme: Theme.Theme
+  fontSize: string
+  variant: Theme.VariantChoices
 }
 
 const RoundButton = styled.button<RoundButtonProps>`
@@ -46,7 +46,9 @@ RoundButton.defaultProps = {
 }
 
 /** @param {ColorOptions} colorName */
-function themeValue(colorName: Theme.ColorOptions): (props: RoundButtonProps) => string {
+function themeValue(
+  colorName: Theme.ColorOptions
+): (props: RoundButtonProps) => string {
   return props => props.theme[props.variant][colorName]
 }
 

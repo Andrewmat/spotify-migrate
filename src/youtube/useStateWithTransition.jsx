@@ -1,8 +1,15 @@
 import * as React from 'react'
 
-export default function useStateWithTransition(initialValue, transitionMs) {
-  const [originalState, originalSetState] = React.useState(initialValue)
-  const [isTransition, setTransition] = React.useState(false)
+export default function useStateWithTransition(
+  initialValue,
+  transitionMs
+) {
+  const [originalState, originalSetState] = React.useState(
+    initialValue
+  )
+  const [isTransition, setTransition] = React.useState(
+    false
+  )
   const timeoutRef = React.useRef()
 
   const finishTransition = React.useCallback(newState => {

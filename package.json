@@ -3,7 +3,8 @@
     "dev": "snowpack dev",
     "build": "snowpack build",
     "build:serve": "yarn build && serve build -p 8080",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "format": "prettier 'src/**/*.(ts|js|tsx|jsx)' --write"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",

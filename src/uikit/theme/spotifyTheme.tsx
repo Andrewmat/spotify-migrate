@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ThemeProvider} from 'styled-components'
-import { Theme } from '@/styled';
+import {Theme} from '@/styled'
 
 const spotifyTheme: Theme.Theme = {
   accent: {
@@ -32,7 +32,11 @@ const spotifyTheme: Theme.Theme = {
 }
 
 export function SpotifyThemeProvider({children}) {
-  return <ThemeProvider theme={spotifyTheme}>{children}</ThemeProvider>
+  return (
+    <ThemeProvider theme={spotifyTheme}>
+      {children}
+    </ThemeProvider>
+  )
 }
 
 export {spotifyTheme}

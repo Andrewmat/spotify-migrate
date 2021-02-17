@@ -2,7 +2,10 @@ import * as React from 'react'
 import {getIsAuth} from '@/spotify/services/SpotifyService'
 
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = React.useState()
+  const [
+    isAuthenticated,
+    setIsAuthenticated,
+  ] = React.useState()
 
   React.useEffect(() => {
     if (isAuthenticated !== undefined) {

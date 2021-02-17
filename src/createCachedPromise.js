@@ -74,7 +74,9 @@ export default function createCachedPromise() {
       .forEach(callback => callback())
 
     // clear
-    listeners = listeners.filter(listener => listener.id !== id)
+    listeners = listeners.filter(
+      listener => listener.id !== id
+    )
   }
 
   return cachedPromise

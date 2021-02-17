@@ -80,9 +80,13 @@ export default function SpotifyTrackCard(props) {
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio src={preview_url} ref={audioRef} loop />
         <RoundButton
-          variant={preview_url != null ? 'accent' : 'neutral'}
+          variant={
+            preview_url != null ? 'accent' : 'neutral'
+          }
           disabled={preview_url == null}
-          title={preview_url == null && 'Song without preview'}
+          title={
+            preview_url == null && 'Song without preview'
+          }
           onClick={() => {
             if (isPlaying) {
               audioRef.current.pause()
@@ -97,7 +101,9 @@ export default function SpotifyTrackCard(props) {
         </RoundButton>
         {showYoutubeLink && (
           <LinkYoutubeContainer>
-            <LinkYoutube to={`/youtube?name=${name}&artist=${artists[0].name}`}>
+            <LinkYoutube
+              to={`/youtube?name=${name}&artist=${artists[0].name}`}
+            >
               <YoutubeIconImg
                 src='/images/youtube-icon.png'
                 alt='YouTube'

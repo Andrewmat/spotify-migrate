@@ -32,7 +32,11 @@ const youtubeTheme: Theme.Theme = {
 }
 
 export function YoutubeThemeProvider({children}) {
-  return <ThemeProvider theme={youtubeTheme}>{children}</ThemeProvider>
+  return (
+    <ThemeProvider theme={youtubeTheme}>
+      {children}
+    </ThemeProvider>
+  )
 }
 
 export {youtubeTheme, ThemeProvider}

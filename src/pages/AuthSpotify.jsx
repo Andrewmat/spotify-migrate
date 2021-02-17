@@ -4,7 +4,9 @@ import {resolveAuthCallback} from '@/spotify/services/SpotifyService'
 import {SpotifyThemeProvider} from '@/uikit/theme'
 
 export default function AuthSpotify() {
-  const [resolution, setResolution] = React.useState('loading')
+  const [resolution, setResolution] = React.useState(
+    'loading'
+  )
   const history = useHistory()
   const location = useLocation()
   React.useEffect(() => {
@@ -34,8 +36,8 @@ export default function AuthSpotify() {
           <span>You're logged in. Redirecting to home</span>
         ) : (
           <span>
-            There has been an error trying to subscribe to Spotify. Redirecting
-            to home
+            There has been an error trying to subscribe to
+            Spotify. Redirecting to home
           </span>
         )}
       </div>

@@ -2,11 +2,10 @@ import styled from 'styled-components'
 import {Theme} from '@Type'
 
 interface RoundSquaredButtonProps {
-  theme: Theme.Theme;
-  fontSize: string;
-  variant: Theme.VariantChoices;
+  theme: Theme.Theme
+  fontSize: string
+  variant: Theme.VariantChoices
 }
-
 
 const RoundSquaredButton = styled.button<RoundSquaredButtonProps>`
   display: inline-block;
@@ -40,9 +39,14 @@ const RoundSquaredButton = styled.button<RoundSquaredButtonProps>`
     box-shadow: none;
   }
 `
-RoundSquaredButton.defaultProps = {fontSize: '1em', variant: 'base'}
+RoundSquaredButton.defaultProps = {
+  fontSize: '1em',
+  variant: 'base',
+}
 
-function themeValue(colorName: Theme.ColorOptions): (props: RoundSquaredButtonProps) => string {
+function themeValue(
+  colorName: Theme.ColorOptions
+): (props: RoundSquaredButtonProps) => string {
   return props => props.theme[props.variant][colorName]
 }
 

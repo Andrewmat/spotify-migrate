@@ -26,13 +26,12 @@ export default function YoutubeSearch() {
     artist: artist,
   }
 
-  const {
-    isLoaded,
-    isFailed,
-    globalValue,
-  } = useScript('https://apis.google.com/js/api.js', {
-    globalName: 'gapi',
-  })
+  const {isLoaded, isFailed, globalValue} = useScript(
+    'https://apis.google.com/js/api.js',
+    {
+      globalName: 'gapi',
+    }
+  )
 
   const [isSignedIn, setSignedIn] = React.useState(false)
 

@@ -30,7 +30,11 @@ export async function getAllUserSavedTracks({
       return items
     }
   }
-  items = fetchAllUserSavedTracks(onProgress, pageSize, limitPages)
+  items = fetchAllUserSavedTracks(
+    onProgress,
+    pageSize,
+    limitPages
+  )
   // items.sort((t1, t2) => t2.track.popularity - t1.track.popularity)
   await saveToStorage(items)
   return items
@@ -53,18 +57,23 @@ async function fetchAllUserSavedTracks(
 
   do {
     if (total === undefined) {
-      const response = await fetchUserSavedTracksPage(page, pageSize)
+      const response = await fetchUserSavedTracksPage(
+        page,
+        pageSize
+      )
       ;({total} = response)
       collected.push(...response.items)
       onProgress(response.items, collected, total)
       page++
     } else {
       requestPool.push(
-        fetchUserSavedTracksPage(page, pageSize).then(response => {
-          const {total} = response
-          collected.push(...response.items)
-          onProgress(response.items, total)
-        })
+        fetchUserSavedTracksPage(page, pageSize).then(
+          response => {
+            const {total} = response
+            collected.push(...response.items)
+            onProgress(response.items, total)
+          }
+        )
       )
       page++
     }
@@ -92,7 +101,10 @@ export async function fetchUserProfile() {
 }
 
 /** @returns {SavedTracksResponse} */
-async function fetchUserSavedTracksPage(page, pageSize = 50) {
+async function fetchUserSavedTracksPage(
+  page,
+  pageSize = 50
+) {
   const response = await treatRateLimit(
     get('/v1/me/tracks', {
       offset: page * pageSize,
@@ -107,13 +119,19 @@ async function fetchUserSavedTracksPage(page, pageSize = 50) {
 }
 
 /** @param {Promise<Request>} promise, @param {() => Promise<Request>} retryFn @returns {Promise<Request>} */
-async function treatRateLimit(promise, retryFn, limitMs = 30000) {
+async function treatRateLimit(
+  promise,
+  retryFn,
+  limitMs = 30000
+) {
   const response = await promise
   if (response.status !== 429) {
     return response
   }
 
-  const retryAfterHeader = response.headers.get('Retry-After')
+  const retryAfterHeader = response.headers.get(
+    'Retry-After'
+  )
   let retryAfterMs = Number(retryAfterHeader) * 1000
 
   if (!retryAfterMs) {
@@ -135,12 +153,16 @@ async function treatRateLimit(promise, retryFn, limitMs = 30000) {
 }
 
 function get(endpoint, params, {body} = {}) {
-  const accessToken = CookieService.getCookie(COOKIE_SPOTIFY_ACCESS_TOKEN)
+  const accessToken = CookieService.getCookie(
+    COOKIE_SPOTIFY_ACCESS_TOKEN
+  )
   return fetch(getUrl(endpoint, params), {
     body,
     method: 'GET',
     headers: {
-      ...(accessToken ? {Authorization: `Bearer ${accessToken}`} : {}),
+      ...(accessToken
+        ? {Authorization: `Bearer ${accessToken}`}
+        : {}),
     },
   })
 }

@@ -54,13 +54,19 @@ export default function SongCard(props) {
               console.log(`Saved ${id}`)
             }}
             onShowVideo={id => {
-              setSelectedEmbed(results.find(result => result.id.videoId === id))
+              setSelectedEmbed(
+                results.find(
+                  result => result.id.videoId === id
+                )
+              )
             }}
           />
         )}
       </SongYoutubeCardContainer>
       <SongYoutubeEmbedContainer>
-        {selectedEmbed && <SongYoutubeEmbed {...selectedEmbed} />}
+        {selectedEmbed && (
+          <SongYoutubeEmbed {...selectedEmbed} />
+        )}
       </SongYoutubeEmbedContainer>
     </SongContainer>
   )

@@ -9,14 +9,17 @@ const spotifySavedTracksStore = localForage.createInstance({
   name: 'spotifysavedtracks',
   storeName: 'spotifysavedtracks',
   version: 1,
-  description: 'A collection of all tracks imported from Spotify',
+  description:
+    'A collection of all tracks imported from Spotify',
 })
 
 const ID_SPOTIFY_SAVED_TRACKS = 'item'
 
 /** @returns {TrackItem[]} */
 export async function getSpotifySavedTracks() {
-  return await spotifySavedTracksStore.getItem(ID_SPOTIFY_SAVED_TRACKS)
+  return await spotifySavedTracksStore.getItem(
+    ID_SPOTIFY_SAVED_TRACKS
+  )
 }
 
 /** @param {TrackItem[]} trackItems */
@@ -39,6 +42,9 @@ export async function getYoutubeSearchResults(term) {
   return await youtubeSearchStore.getItem(term)
 }
 
-export async function setYoutubeSearchResults(term, results) {
+export async function setYoutubeSearchResults(
+  term,
+  results
+) {
   return await youtubeSearchStore.setItem(term, results)
 }

@@ -21,10 +21,11 @@ export default function YoutubeVideoCard(props) {
     onUnsave,
   } = props
 
-  const [isSaved, setSaved, isChangingSaved] = useStateWithTransition(
-    false,
-    2000
-  )
+  const [
+    isSaved,
+    setSaved,
+    isChangingSaved,
+  ] = useStateWithTransition(false, 2000)
   const image =
     snippet.thumbnails.default ??
     snippet.thumbnails.medium ??
@@ -62,7 +63,9 @@ export default function YoutubeVideoCard(props) {
           width={image.width}
         />
       </YoutubeThumbContainer>
-      <YoutubeTitle href={`https://www.youtube.com/watch?v=${videoId}`}>
+      <YoutubeTitle
+        href={`https://www.youtube.com/watch?v=${videoId}`}
+      >
         {snippet.title}
       </YoutubeTitle>
       <YoutubeChannel

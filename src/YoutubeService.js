@@ -13,7 +13,9 @@ import {
 
 /** @param {GApi} gapi, @returns {Promise<boolean>} */
 export async function checkSubscribed(gapi, ...scopes) {
-  scopes = scopes || ['https://www.googleapis.com/auth/youtube.force-ssl']
+  scopes = scopes || [
+    'https://www.googleapis.com/auth/youtube.force-ssl',
+  ]
   const scope = scopes.join(' ')
   await loadLibs(gapi, 'auth2', 'client')
   const authInstance = await getAuthInstance(gapi)
@@ -21,12 +23,16 @@ export async function checkSubscribed(gapi, ...scopes) {
   if (!authInstance.isSignedIn.get()) {
     return false
   }
-  return authInstance.currentUser.get().hasGrantedScopes(scope)
+  return authInstance.currentUser
+    .get()
+    .hasGrantedScopes(scope)
 }
 
 /** @param {GApi} gapi, @returns {Promise<void>} */
 export async function subscribe(gapi, ...scopes) {
-  scopes = scopes || ['https://www.googleapis.com/auth/youtube.force-ssl']
+  scopes = scopes || [
+    'https://www.googleapis.com/auth/youtube.force-ssl',
+  ]
   const scope = scopes.join(' ')
   await loadLibs(gapi, 'auth2', 'client')
   const authInstance = await getAuthInstance(gapi)
@@ -57,8 +63,13 @@ export async function searchSpotifyTrack(
   track,
   {maxResults = 10, useCache = true} = {}
 ) {
-  const term = [track.name, track.artists[0].name].map(v => `"${v}"`).join(' ')
-  return await searchMusicVideo(gapi, term, {maxResults, useCache})
+  const term = [track.name, track.artists[0].name]
+    .map(v => `"${v}"`)
+    .join(' ')
+  return await searchMusicVideo(gapi, term, {
+    maxResults,
+    useCache,
+  })
 }
 
 /**
@@ -73,7 +84,9 @@ export async function searchMusicVideo(
   {maxResults = 10, useCache = true} = {}
 ) {
   if (useCache) {
-    const cachedResults = await getYoutubeSearchResults(term)
+    const cachedResults = await getYoutubeSearchResults(
+      term
+    )
 
     if (cachedResults) {
       return cachedResults
@@ -112,7 +125,9 @@ export async function rateVideo(gapi, videoId, rating) {
 async function getAuthInstance(gapi) {
   let instance = gapi.auth2.getAuthInstance()
   if (!instance) {
-    await gapi.auth2.init({client_id: getVar('GOOGLE_CLIENT_ID')})
+    await gapi.auth2.init({
+      client_id: getVar('GOOGLE_CLIENT_ID'),
+    })
     instance = gapi.auth2.getAuthInstance()
   }
   return instance
@@ -143,7 +158,9 @@ async function loadLibs(gapi, ...libs) {
     return
   }
 
-  await new Promise(resolve => gapi.load(notInitLibs.join(':'), resolve))
+  await new Promise(resolve =>
+    gapi.load(notInitLibs.join(':'), resolve)
+  )
 
   if (notInitLibs.includes('client')) {
     gapi.client.setApiKey(getVar('GOOGLE_API_KEY'))
