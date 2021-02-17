@@ -3,8 +3,9 @@
     "dev": "snowpack dev",
     "build": "snowpack build",
     "build:serve": "yarn build && serve build -p 8080",
-    "lint": "eslint src",
-    "format": "prettier 'src/**/*.(ts|js|tsx|jsx)' --write"
+    "lint": "eslint 'src/**/*.@(ts|tsx|js|jsx)'",
+    "prettier": "prettier --write src",
+    "prettier:check": "prettier --check src"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
@@ -16,6 +17,7 @@
     "@typescript-eslint/parser": "^4.15.0",
     "babel-eslint": "^10.0.0",
     "eslint": "^7.5.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",

@@ -41,6 +41,7 @@ export function Provider({children}) {
       return
     }
     fetchAccountRef.current(dispatch)
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     fetchAccountRef.current = () => {}
   }, [authenticated, value.status])
 

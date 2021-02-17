@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import {getSpotifySavedTracks} from '@/StorageService'
 import useScript from '@/useScript'
-import {searchSpotifyTrack} from '@/YoutubeService'
 import SongCard from './SongCard'
 
 /**
