@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "..",
     "allowJs": true,
     "jsx": "react",
+    "module": "CommonJS",
+    "target": "ES2018",
+    "moduleResolution": "node",
+    "outDir": "../crawler-build",
     "paths": {
-      "@/*": ["./*"],
-      "@Type": ["./d.ts/index.d.ts"],
-      "@Type/*": ["./d.ts/*"]
+      "@/*": ["./crawler"],
+      "@src/*": ["./src"],
+      "@Type": ["./src/d.ts/index.d.ts"],
+      "@Type/*": ["./src/d.ts/*"]
     },
     "plugins": [{
       "name": "typescript-styled-plugin",
@@ -18,6 +23,6 @@
       }
     }]
   },
-  "include": ["src/**/*"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "build", "crawler-build"]
 }
