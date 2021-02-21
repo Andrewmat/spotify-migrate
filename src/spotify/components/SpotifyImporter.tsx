@@ -6,24 +6,27 @@ import RoundButton from '@/uikit/RoundButton'
 import styled from 'styled-components'
 import {loadAllUserSavedTracks} from '@/spotify/services/SpotifyAccountService'
 import {device} from '@/css'
+import {SpotifyTrack} from '@Type'
 
-/**
- * @typedef {import('@Type').SpotifyTrack.TrackItem} TrackItem
- * @typedef {import('react').Dispatch<import('react').SetStateAction<TrackItem[]>>} ReactDispatchTrackItems
- * */
+type TrackItemType = SpotifyTrack.TrackItem
 
 export default function SpotifyImporter() {
-  /** @type {[TrackItem[], ReactDispatchTrackItems]} */
-  const [tracks, setTracks] = React.useState([])
+  const [tracks, setTracks] = React.useState<
+    TrackItemType[]
+  >([])
 
-  /** @type {[TrackItem[], ReactDispatchTrackItems]} */
-  const [cachedTracks, setCachedTracks] = React.useState()
+  const [cachedTracks, setCachedTracks] = React.useState<
+    TrackItemType[]
+  >()
 
   const [finished, setFinished] = React.useState(false)
   const [total, setTotal] = React.useState(0)
 
   const onImportProgress = React.useCallback(
-    (newTrackItems, responseTotal) => {
+    (
+      newTrackItems: TrackItemType[],
+      responseTotal: number
+    ) => {
       setTracks(currentTrackItems =>
         currentTrackItems.concat(newTrackItems)
       )

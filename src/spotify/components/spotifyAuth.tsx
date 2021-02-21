@@ -5,7 +5,7 @@ export function useAuth() {
   const [
     isAuthenticated,
     setIsAuthenticated,
-  ] = React.useState()
+  ] = React.useState<boolean>()
 
   React.useEffect(() => {
     if (isAuthenticated !== undefined) {
@@ -20,7 +20,12 @@ export function useAuth() {
   return isAuthenticated
 }
 
-export function HasAuth({not = false, children}) {
+export function HasAuth({
+  not = false,
+  children,
+}: React.PropsWithChildren<{
+  not: boolean
+}>): React.ReactNode | null {
   const isAuthenticated = useAuth()
 
   const showChildren = React.useMemo(() => {

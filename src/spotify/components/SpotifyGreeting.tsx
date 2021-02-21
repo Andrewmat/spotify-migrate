@@ -1,21 +1,24 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {useAccount} from '@/spotify/spotifyAccount'
+import {SpotifyUser} from '@Type'
 
-/**
- * @typedef {import('./account').Account} Account
- * */
+type Account = SpotifyUser.UserResponse
 
 export default function SpotifyGreeting() {
-  const a = useAccount()
-  const {status, account, errorMessage} = a
+  const {status, account, errorMessage} = useAccount()
+
+  React.useEffect(() => {
+    if (status === 'rejected') {
+      console.error(errorMessage)
+    }
+  }, [status, errorMessage])
 
   switch (status) {
     case 'fulfilled': {
       return <GreetingAccount account={account} />
     }
     case 'rejected': {
-      console.error(errorMessage)
       return (
         <span>
           There has been a mistake when retrieving your name
@@ -29,8 +32,7 @@ export default function SpotifyGreeting() {
   }
 }
 
-/** @param {{account: Account}} */
-function GreetingAccount({account}) {
+function GreetingAccount({account}: {account: Account}) {
   return (
     <Heading>
       Hello,{' '}

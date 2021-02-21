@@ -1,17 +1,34 @@
 import * as React from 'react'
 import {fetchUserProfile as servicefetchUserProfile} from '@/spotify/services/SpotifyService'
 import {useAuth} from '@/spotify/components/spotifyAuth'
+import {SpotifyUser} from '@Type'
 
-/**
- * @typedef {'loading' | 'fulfilled' | 'rejected'| 'idle'} Status
- * @typedef {import('@Type').SpotifyUser.UserResponse} Account
- * @typedef {{status:Status, account: Account, errorMessage: string}} AccountContext
- * @typedef {import('react').Context<AccountContext>} ReactContext
- * @typedef {import('react').Dispatch<import('react').SetStateAction<AccountContext>>} ReactAccountDispatch
- */
+type Status = 'loading' | 'fulfilled' | 'rejected' | 'idle'
 
-/** @type {ReactContext} */
-const ctx = React.createContext()
+interface AccountContext {
+  status: Status
+  account?: SpotifyUser.UserResponse
+  errorMessage?: string
+}
+
+interface AccountReducerAction {
+  type: 'loading' | 'fulfilled' | 'rejected'
+  payload?: {
+    account?: SpotifyUser.UserResponse
+    message?: string
+  }
+}
+
+interface AccountReducer {
+  (
+    state: AccountContext,
+    action: AccountReducerAction
+  ): AccountContext
+}
+
+const ctx = React.createContext<AccountContext | undefined>(
+  undefined
+)
 
 export function useAccount() {
   const value = React.useContext(ctx)
@@ -23,12 +40,17 @@ export function useAccount() {
 
   return value
 }
+
 export function Provider({children}) {
-  /** @type {[AccountContext, ReactAccountDispatch]} */
-  const [value, dispatch] = React.useReducer(reducer, {
+  const [
+    value,
+    dispatch,
+  ] = React.useReducer<AccountReducer>(reducer, {
     status: 'idle',
   })
-  const fetchAccountRef = React.useRef(fetchAccount)
+  const fetchAccountRef = React.useRef<
+    typeof fetchAccount | (() => void)
+  >(fetchAccount)
 
   const authenticated = useAuth()
 
@@ -50,20 +72,26 @@ export function Provider({children}) {
   )
 }
 
-async function fetchAccount(dispatch) {
+async function fetchAccount(
+  dispatch: React.Dispatch<AccountReducerAction>
+) {
   dispatch({type: 'loading'})
   try {
     const account = await servicefetchUserProfile()
     dispatch({type: 'fulfilled', payload: {account}})
   } catch (e) {
+    const message = e.message ? e.message : e
     dispatch({
       type: 'rejected',
-      payload: {message: e.message},
+      payload: {message},
     })
   }
 }
 
-function reducer(state, action) {
+function reducer(
+  state: AccountContext,
+  action: AccountReducerAction
+): AccountContext {
   switch (action.type) {
     case 'loading': {
       return {...state, status: 'loading'}
