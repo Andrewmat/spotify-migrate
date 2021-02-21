@@ -10,13 +10,6 @@ import {
   GoogleApi,
 } from '@Type'
 
-/**
- * @typedef {typeof window.gapi} GApi
- * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeResource
- * @typedef {import('react').Dispatch<import('react').SetStateAction<YoutubeResource[]>>} ReactDispatchYoutubeResources
- * @typedef {import('@Type').SpotifyTrack.Track} SpotifyTrack
- */
-
 type YoutubeVideo = GApiYoutubeResponse.GApiYoutubeResource
 
 export default function SongCard({

@@ -1,20 +1,21 @@
 import {YoutubeThemeProvider} from '@/uikit/theme'
 import * as React from 'react'
 import styled from 'styled-components'
+import {GApiYoutubeResponse} from '@Type'
 
-/**
- * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeVideo
- * */
+type YoutubeVideo = GApiYoutubeResponse.GApiYoutubeResource
 
-/**
- * @param {{
- *   results: YoutubeVideo[],
- *   onAddToSave(id: string): Promise<void>,
- *   onShowVideo(id: string): void,
- * }} props
- * */
-export default function SongYoutubeCard(props) {
-  const {results, onAddToSave, onShowVideo} = props
+interface Props {
+  results: YoutubeVideo[]
+  onAddToSave(id: string): Promise<void>
+  onShowVideo(id: string): Promise<void>
+}
+
+export default function SongYoutubeCard({
+  results,
+  onAddToSave,
+  onShowVideo,
+}: Props) {
   return (
     <YoutubeThemeProvider>
       <YoutubeContainer>
@@ -39,15 +40,16 @@ export default function SongYoutubeCard(props) {
   )
 }
 
-/**
- * @param {YoutubeVideo & {
- *   onAddToSave(): Promise<void>,
- *   onShowVideo(): Promise<void>,
- * }} props
- * */
-function SongYoutubeCardResult(props) {
-  const {snippet, onAddToSave, onShowVideo} = props
-
+interface PropsResult extends YoutubeVideo {
+  onAddToSave(): Promise<void>
+  onShowVideo(): Promise<void>
+}
+function SongYoutubeCardResult({
+  id,
+  snippet,
+  onAddToSave,
+  onShowVideo,
+}: PropsResult) {
   const image =
     snippet.thumbnails.default ??
     snippet.thumbnails.medium ??
@@ -80,7 +82,7 @@ function SongYoutubeCardResult(props) {
       <YoutubeInteractiveContainer>
         <YoutubeShowEmbedButton
           onClick={() => {
-            console.log('show video', props.id.videoId)
+            console.log('show video', id.videoId)
             onShowVideo()
           }}
         >

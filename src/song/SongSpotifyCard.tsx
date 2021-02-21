@@ -7,27 +7,23 @@ import {
 } from '@/uikit/theme'
 import * as React from 'react'
 import styled from 'styled-components'
+import {SpotifyTrack} from '@Type'
 
-/**
- * @typedef {import('@Type').SpotifyTrack.Track} Track
- * @typedef {import('react').MutableRefObject<HTMLAudioElement>} AudioRef
- */
+interface Props extends SpotifyTrack.Track {
+  onYoutubeSearch(): void
+}
 
-/** @param {Track & {onYoutubeSearch(): void}} props */
-export default function SongSpotifyCard(props) {
-  const {
-    album,
-    artists,
-    name,
-    external_urls,
-    preview_url,
-    onYoutubeSearch,
-  } = props
-
+export default function SongSpotifyCard({
+  album,
+  artists,
+  name,
+  external_urls,
+  preview_url,
+  onYoutubeSearch,
+}: Props) {
   const [isPlaying, setIsPlaying] = React.useState(false)
 
-  /** @type {AudioRef} */
-  const audioRef = React.useRef()
+  const audioRef = React.useRef<HTMLAudioElement>()
 
   function togglePreview() {
     if (isPlaying) {
@@ -95,10 +91,8 @@ export default function SongSpotifyCard(props) {
             </Join>
           </ArtistList>
           <Album>
-            <AlbumLink
-              href={props.album.external_urls.spotify}
-            >
-              {props.album.name}
+            <AlbumLink href={album.external_urls.spotify}>
+              {album.name}
             </AlbumLink>
           </Album>
         </TextContainer>

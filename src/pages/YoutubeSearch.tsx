@@ -27,9 +27,7 @@ export default function YoutubeSearch() {
     globalValue: gapi,
   } = useScript<GoogleApi.GApi>(
     'https://apis.google.com/js/api.js',
-    {
-      globalName: 'gapi',
-    }
+    {globalName: 'gapi'}
   )
 
   const [isSignedIn, setSignedIn] = React.useState(false)

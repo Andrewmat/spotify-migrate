@@ -22,6 +22,12 @@ interface ReducerAction<GlobalProperty> {
   globalObj?: GlobalProperty
   error?: unknown
 }
+interface Reducer<GlobalProperty> {
+  (
+    state: ReducerState<GlobalProperty>,
+    action: ReducerAction<GlobalProperty>
+  ): ReducerState<GlobalProperty>
+}
 
 /**
  * useScript will load a `<script>` tag
@@ -36,12 +42,7 @@ export default function useScript<GlobalProperty>(
   const [
     {status, globalValue},
     dispatch,
-  ] = React.useReducer<
-    (
-      state: ReducerState<GlobalProperty>,
-      action: ReducerAction<GlobalProperty>
-    ) => ReducerState<GlobalProperty>
-  >(reducer, {
+  ] = React.useReducer<Reducer<GlobalProperty>>(reducer, {
     status: 'idle',
   })
 
@@ -74,10 +75,10 @@ export default function useScript<GlobalProperty>(
   )
 }
 
-function reducer<GlobalValue>(
-  state: ReducerState<GlobalValue>,
-  action: ReducerAction<GlobalValue>
-): ReducerState<GlobalValue> {
+function reducer<GlobalProperty>(
+  state: ReducerState<GlobalProperty>,
+  action: ReducerAction<GlobalProperty>
+): ReducerState<GlobalProperty> {
   switch (action.type) {
     case 'load': {
       return {

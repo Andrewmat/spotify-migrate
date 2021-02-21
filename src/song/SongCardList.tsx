@@ -3,27 +3,20 @@ import styled from 'styled-components'
 import {getSpotifySavedTracks} from '@/StorageService'
 import useScript from '@/useScript'
 import SongCard from './SongCard'
-
-/**
- * @typedef {typeof window.gapi} GApi
- * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeResource
- * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
- * @typedef {import('@Type').SpotifyTrack.Track} SpotifyTrack
- * @typedef {import('react').Dispatch<import('react').SetStateAction<SpotifyTrack[]>>} ReactDispatchSpotifyTracks
- */
+import {SpotifyTrack, GoogleApi} from '@Type'
 
 export default function SongCardList() {
-  /** @type {[SpotifyTrack[], ReactDispatchSpotifyTracks]} */
-  const [spotifyTracks, setSpotifyTracks] = React.useState()
-  const {isLoaded, isFailed, globalValue} = useScript(
+  const [spotifyTracks, setSpotifyTracks] = React.useState<
+    SpotifyTrack.Track[]
+  >()
+  const {
+    isLoaded,
+    isFailed,
+    globalValue: gapi,
+  } = useScript<GoogleApi.GApi>(
     'https://apis.google.com/js/api.js',
-    {
-      globalName: 'gapi',
-    }
+    {globalName: 'gapi'}
   )
-
-  /** @type {GApi} */
-  const gapi = globalValue
 
   React.useEffect(() => {
     if (!isLoaded) {

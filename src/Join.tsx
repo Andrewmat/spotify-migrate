@@ -1,17 +1,9 @@
 import * as React from 'react'
 
-/**
- * @typedef {import('react').ReactChild} ReactChild
- * @typedef {import('react').ReactElement} ReactElement
- */
-
-/**
- * @param {{
- *   children: ReactChild,
- *   separator: ReactElement
- * }}
- */
-export default function Join({children, separator}) {
+export default function Join({
+  children,
+  separator,
+}: React.PropsWithChildren<{separator: React.ReactNode}>) {
   const count = React.Children.count(children)
   return (
     <>
