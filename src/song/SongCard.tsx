@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import SongSpotifyCard from './SongSpotifyCard'
 import SongYoutubeCard from './SongYoutubeCard'
 import SongYoutubeEmbed from './SongYoutubeEmbed'
+import {
+  SpotifyTrack,
+  GApiYoutubeResponse,
+  GoogleApi,
+} from '@Type'
 
 /**
  * @typedef {typeof window.gapi} GApi
@@ -12,22 +17,32 @@ import SongYoutubeEmbed from './SongYoutubeEmbed'
  * @typedef {import('@Type').SpotifyTrack.Track} SpotifyTrack
  */
 
-/** @param {{spotifyTrack: SpotifyTrack, gapi: GApi}} props */
-export default function SongCard(props) {
-  /** @type {[YoutubeResource, ReactDispatchYoutubeResource]} */
-  const [selectedEmbed, setSelectedEmbed] = React.useState()
+type YoutubeVideo = GApiYoutubeResponse.GApiYoutubeResource
 
-  /** @type {[YoutubeResource[], ReactDispatchYoutubeResources]} */
-  const [results, setResults] = React.useState()
+export default function SongCard({
+  spotifyTrack,
+  gapi,
+}: {
+  spotifyTrack: SpotifyTrack.Track
+  gapi: GoogleApi.GApi
+}) {
+  const [
+    selectedEmbed,
+    setSelectedEmbed,
+  ] = React.useState<YoutubeVideo>()
 
-  if (!props.spotifyTrack) {
+  const [results, setResults] = React.useState<
+    YoutubeVideo[]
+  >()
+
+  if (!spotifyTrack) {
     return <div>Lacking required props</div>
   }
 
   async function searchOnYoutube() {
     const responseResults = await searchSpotifyTrack(
-      props.gapi,
-      props.spotifyTrack,
+      gapi,
+      spotifyTrack,
       {
         maxResults: 3,
         useCache: true,
@@ -41,7 +56,7 @@ export default function SongCard(props) {
     <SongContainer>
       <SongSpotifyCardContainer>
         <SongSpotifyCard
-          {...props.spotifyTrack}
+          {...spotifyTrack}
           onYoutubeSearch={() => searchOnYoutube()}
         />
       </SongSpotifyCardContainer>
@@ -50,7 +65,7 @@ export default function SongCard(props) {
         {results && (
           <SongYoutubeCard
             results={results}
-            onAddToSave={id => {
+            onAddToSave={async id => {
               console.log(`Saved ${id}`)
             }}
             onShowVideo={id => {
