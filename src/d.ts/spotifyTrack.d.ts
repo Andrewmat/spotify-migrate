@@ -3,7 +3,7 @@ import {SpotifyCommon} from './spotifyCommon'
 export namespace SpotifyTrack {
   interface SavedTracksResponse {
     href: string
-    items: Spotify.TrackItem[]
+    items: TrackItem[]
     limit: number
     /** @example 'https://api.spotify.com/v1/me/tracks?offset=20&limit=20' */
     next: string

@@ -6,6 +6,7 @@ import SpotifyImporterCache from './SpotifyImporterCache'
 import SpotifyImporterTrackList from './SpotifyImporterTrackList'
 import {SpotifyTrack} from '@Type'
 import styled from 'styled-components'
+import SpotifyCsvExporter from './SpotifyCsvExporter'
 
 type TrackItem = SpotifyTrack.TrackItem
 
@@ -16,6 +17,21 @@ export default function SpotifyImporter() {
 
   const [finished, setFinished] = React.useState(false)
   const [total, setTotal] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!finished) {
+      return
+    }
+    setTracks(currentTracks =>
+      currentTracks
+        .concat()
+        .sort(
+          (a, b) =>
+            new Date(b.added_at).getTime() -
+            new Date(a.added_at).getTime()
+        )
+    )
+  }, [finished])
 
   const onImportProgress = React.useCallback(
     (newTrackItems: TrackItem[], responseTotal: number) => {
@@ -34,9 +50,6 @@ export default function SpotifyImporter() {
     setTracks([])
     const tracks = await getAllUserSavedTracks({
       onProgress: onImportProgress,
-      pageSize: 5,
-      limitPages: 3,
-      ignoreCached: true,
     })
     setTracks(tracks)
     setFinished(true)
@@ -51,6 +64,7 @@ export default function SpotifyImporter() {
         <SpotifyImporterCache
           onCacheChoice={cachedTracks => {
             setTracks(cachedTracks)
+            setFinished(true)
           }}
         />
       )}
@@ -87,6 +101,7 @@ export default function SpotifyImporter() {
           </strong>
         </TextMargin>
       )}
+      <SpotifyCsvExporter tracks={tracks} />
       <SpotifyImporterTrackList tracks={tracks} />
     </Container>
   )
