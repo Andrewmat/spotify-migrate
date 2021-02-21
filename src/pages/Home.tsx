@@ -34,4 +34,6 @@ export default function Home() {
 
 const Container = styled.div`
   padding: 20px;
+  max-width: 1024px;
+  margin: auto;
 `

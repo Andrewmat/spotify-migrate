@@ -24,8 +24,8 @@ export function HasAuth({
   not = false,
   children,
 }: React.PropsWithChildren<{
-  not: boolean
-}>): React.ReactNode | null {
+  not?: boolean
+}>): JSX.Element | null {
   const isAuthenticated = useAuth()
 
   const showChildren = React.useMemo(() => {
@@ -34,7 +34,7 @@ export function HasAuth({
   }, [not, isAuthenticated])
 
   if (showChildren) {
-    return children
+    return <>{children}</>
   }
   return null
 }

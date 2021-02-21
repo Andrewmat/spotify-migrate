@@ -1,17 +1,18 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 import RoundButton from '@/uikit/RoundButton'
 import Join from '@/Join'
 import {device, textEllipsis} from '@/css'
-import {Link} from 'react-router-dom'
+import {SpotifyTrack} from '@Type'
 
-/**
- * @typedef {import('@Type').SpotifyTrack.Track} Track
- * @typedef {import('react').MutableRefObject<HTMLAudioElement>} AudioRef
- */
+type Track = SpotifyTrack.Track
 
-/** @param {Track & {showYoutubeLink: boolean}} props */
-export default function SpotifyTrackCard(props) {
+interface Props extends Track {
+  showYoutubeLink?: boolean
+}
+
+export default function SpotifyTrackCard(props: Props) {
   const {
     album,
     artists,
@@ -23,8 +24,7 @@ export default function SpotifyTrackCard(props) {
 
   const [isPlaying, setIsPlaying] = React.useState(false)
 
-  /** @type {AudioRef} */
-  const audioRef = React.useRef()
+  const audioRef = React.useRef<HTMLAudioElement>()
 
   const image = React.useMemo(
     () =>
