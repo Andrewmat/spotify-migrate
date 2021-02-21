@@ -20,7 +20,7 @@ export function useAuth() {
   return isAuthenticated
 }
 
-export function HasAuth({not, children}) {
+export function HasAuth({not = false, children}) {
   const isAuthenticated = useAuth()
 
   const showChildren = React.useMemo(() => {

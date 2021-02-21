@@ -12,12 +12,7 @@ import RoundSquaredButton from '@/uikit/RoundSquaredButton'
 import useQuery from '@/useQuery'
 import {device} from '@/css'
 import {YoutubeThemeProvider} from '@/uikit/theme'
-
-/**
- * @typedef {typeof window.gapi} GApi
- * @typedef {import('@Type').GApiYoutubeResponse.GApiYoutubeResource} YoutubeResource
- * @typedef {import('react').Dispatch<import('react').SetStateAction<GApiYoutubeResource[]>>} ReactDispatchYoutubeResources
- */
+import {GoogleApi, GApiYoutubeResponse} from '@Type'
 
 export default function YoutubeSearch() {
   const {name, artist} = useQuery()
@@ -26,7 +21,11 @@ export default function YoutubeSearch() {
     artist: artist,
   }
 
-  const {isLoaded, isFailed, globalValue} = useScript(
+  const {
+    isLoaded,
+    isFailed,
+    globalValue: gapi,
+  } = useScript<GoogleApi.GApi>(
     'https://apis.google.com/js/api.js',
     {
       globalName: 'gapi',
@@ -35,11 +34,9 @@ export default function YoutubeSearch() {
 
   const [isSignedIn, setSignedIn] = React.useState(false)
 
-  /** @type {[YoutubeResource[], ReactDispatchYoutubeResources]} */
-  const [searchResult, setSearchResult] = React.useState([])
-
-  /** @type {GApi} */
-  const gapi = globalValue
+  const [searchResult, setSearchResult] = React.useState<
+    GApiYoutubeResponse.GApiYoutubeResource[]
+  >([])
 
   React.useEffect(() => {
     if (!isLoaded) {

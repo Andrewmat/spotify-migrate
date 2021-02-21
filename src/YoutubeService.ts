@@ -1,4 +1,5 @@
 import {getVar} from '@/EnvService'
+import {GoogleApi} from '@Type'
 import {
   getYoutubeSearchResults,
   setYoutubeSearchResults,
@@ -78,10 +79,17 @@ export async function searchSpotifyTrack(
  * @param {{maxResults: number, useCache: boolean}}
  * @returns {GApiYoutubeResource[]}
  * */
+interface SearchMusicOptions {
+  maxResults?: number
+  useCache?: boolean
+}
 export async function searchMusicVideo(
-  gapi,
-  term,
-  {maxResults = 10, useCache = true} = {}
+  gapi: GoogleApi.GApi,
+  term: string,
+  {
+    maxResults = 10,
+    useCache = true,
+  }: SearchMusicOptions = {}
 ) {
   if (useCache) {
     const cachedResults = await getYoutubeSearchResults(
@@ -99,7 +107,7 @@ export async function searchMusicVideo(
   const response = await gapi.client.youtube.search.list({
     part: ['snippet'],
     q: term,
-    videoCategoryId: 10,
+    videoCategoryId: '10',
     type: 'video',
     maxResults,
   })

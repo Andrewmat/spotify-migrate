@@ -112,7 +112,7 @@ export namespace GoogleApiYoutube {
      * Acceptable values are 0 to 50, inclusive
      * @default 5
      * */
-    maxResults?: string
+    maxResults?: number
 
     /**
      * Indicates that the request's authorization credentials identify

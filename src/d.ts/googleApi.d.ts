@@ -7,7 +7,7 @@ export {
 } from './googleYoutube'
 export {GoogleApiAuth} from './googleAuth'
 
-namespace GoogleApi {
+export namespace GoogleApi {
   interface GApi {
     load: (apiName: ApiName, callback: () => void) => void
     client: GApiClient

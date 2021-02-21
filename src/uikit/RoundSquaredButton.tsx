@@ -3,8 +3,8 @@ import {Theme} from '@Type'
 
 interface RoundSquaredButtonProps {
   theme: Theme.Theme
-  fontSize: string
-  variant: Theme.VariantChoices
+  fontSize?: string
+  variant?: Theme.VariantChoices
 }
 
 const RoundSquaredButton = styled.button<RoundSquaredButtonProps>`
