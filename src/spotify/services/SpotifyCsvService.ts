@@ -155,7 +155,13 @@ function getTrackField(
 }
 
 function treatString(str: string) {
-  if (!str.includes(',') && !str.includes('#')) {
+  if (
+    !(
+      str.includes(',') ||
+      str.includes('#') ||
+      str.includes('"')
+    )
+  ) {
     return str
   }
 
@@ -163,7 +169,7 @@ function treatString(str: string) {
     return `"${str}"`
   }
 
-  return `${str.replace(/"/g, '""')}`
+  return `"${str.replace(/"/g, '""')}"`
 }
 
 function arrayField<Type>(

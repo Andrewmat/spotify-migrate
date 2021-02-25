@@ -3,20 +3,23 @@
     "baseUrl": "src",
     "allowJs": true,
     "jsx": "react",
+    "target": "ES2018",
     "paths": {
       "@/*": ["./*"],
       "@Type": ["./d.ts/index.d.ts"],
       "@Type/*": ["./d.ts/*"]
     },
-    "plugins": [{
-      "name": "typescript-styled-plugin",
-      "lint": {
-        "validProperties": [
-          "content-visibility",
-          "contain-intrinsic-size"
-        ]
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": [
+            "content-visibility",
+            "contain-intrinsic-size"
+          ]
+        }
       }
-    }]
+    ]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build", "crawler-build"]
